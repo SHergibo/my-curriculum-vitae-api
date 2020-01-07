@@ -1,5 +1,5 @@
 const Express = require('express'),
-      MailController = require(`${process.cwd()}/api/controllers/user.controller`);
+      MailController = require(`${process.cwd()}/api/controllers/mail.controller`);
 
 const router = Express.Router();
 

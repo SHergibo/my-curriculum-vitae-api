@@ -1,17 +1,56 @@
 const Mail = require('./../models/mail.model'),
-      Boom = require('boom');
+      NodeMailer = require('nodemailer');
+      config = require('./../../config/secrets');
 
 /**
-* Post one user
+* Send mail
 */
-exports.send = async (req, res, next) =>{
-    console.log(req.body)
-    try{
-        const user = new User(req.body);
-        await user.save();
-        await TokenAuth.generate(user);
-        return res.json(user.transform());
-    }catch(error){
-        next(User.checkDuplicateEmail(error));
-    }
+exports.send = async (req, res, next) => {
+  try {
+    const output = `
+      <p>You have a new contact request</p>
+      <h3>Contact details</h3>
+      <ul>
+          <li>Name : ${req.body.lastname} ${req.body.firstname}</li>
+          <li>Phone number : ${req.body.phone}</li>
+          <li>Email : ${req.body.email}</li>
+          <li>Subject : ${req.body.subject}</li>
+      </ul>
+      <h3>Message</h3>
+      <p>${req.body.message}</p>
+      `;
+
+    let transporter = NodeMailer.createTransport({
+      host: 'smtp.gmail.com',
+      service: 'gmail',
+      auth: {
+        user: config.mail,
+        pass: config.pass
+      },
+      tls: {
+        rejectUnauthorized: false
+      }
+    });
+
+
+    let mailOptions = {
+      from: `"Site web cv" <${config.mail}>`,
+      to: `${config.mail}`,
+      subject: 'Message received',
+      text: 'Hello world?',
+      html: output
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      
+      if (error) {
+        return console.log(error);
+      }else{
+        return res.json({status : "200"});
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
 };
