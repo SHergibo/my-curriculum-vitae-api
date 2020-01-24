@@ -1,65 +1,67 @@
-const Educ = require('./../models/education.model'),
+const EducExpe = require('./../models/educationExperience.model'),
       Boom = require('boom');
 
 /**
-* Post one Education
+* Post one Education/Experience
 */
 exports.add = async (req, res, next) =>{
     try{
         console.log(req.body);
-        const educ = new Educ(req.body);
-        await educ.save();
-        return res.json(educ);
+        let dataUserId = req.body;
+        dataUserId.userId = req.user._id;
+        const educExpe = new EducExpe(dataUserId);
+        await educExpe.save();
+        return res.json(educExpe);
     }catch(error){
         next(Boom.badImplementation(error.message));
     }
 };
 
 /**
-* GET all Education by user id
+* GET all Education/Experience by user id
 */
 exports.findAllQuery = async (req, res, next) =>{
     try {
-        const educ = await Educ.find({
+        const educExpe = await EducExpe.find({
             userId : req.query.userId,
         });
-        return res.json(educ);
+        return res.json(educExpe);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
 };
 
 /**
-* GET one education
+* GET one Education/Experience
 */
 exports.findOne = async (req, res, next) =>{
     try {
-        const educ = await Educ.findById(req.params.educId);
-        return res.json(educ);
+        const educExpe = await EducExpe.findById(req.params.educExpeId);
+        return res.json(educExpe);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
 };
 
 /**
-* PATCH education
+* PATCH Education/Experience
 */
 exports.update = async (req, res, next) => {
     try {
-        const educ = await Educ.findByIdAndUpdate(req.params.educId,  req.body, {new : true});
-        return res.json(educ);
+        const educExpe = await EducExpe.findByIdAndUpdate(req.params.educExpeId,  req.body, {new : true});
+        return res.json(educExpe);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
 };
 
 /**
-* DELETE education
+* DELETE Education/Experience
 */
 exports.remove = async (req, res, next) => {
     try {
-        const educ = await Educ.findByIdAndDelete(req.params.educId);
-        return res.json(educ);
+        const educExpe = await EducExpe.findByIdAndDelete(req.params.educExpeId);
+        return res.json(educExpe);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }

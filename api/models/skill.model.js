@@ -2,26 +2,23 @@ const Mongoose = require('mongoose');
 
 let Schema = Mongoose.Schema;
 
+const SkillCategory = ['generalSkill', 'codingSkill', 'language'];
+
 let schema = new Schema({
-    yearBegin : {
-        type : Number,
-        required : true,
-        trim : true
-    },
-    yearEnd : {
-        type : Number,
-        required : true,
-        trim : true
-    },
-    titleEducation : {
+    nameSkill : {
         type : String,
         required : true,
         trim : true
     },
-    schoolName : {
-        type : String,
+    percentage : {
+        type : Number,
         required : true,
         trim : true
+    },
+    skillCategory : {
+        type : String,
+        enum : SkillCategory,
+        required : true
     },
     userId : {
         type : Schema.Types.ObjectId,
@@ -30,4 +27,4 @@ let schema = new Schema({
     },
 });
 
-module.exports = Mongoose.model('Educ', schema);
+module.exports = Mongoose.model('Skill', schema);

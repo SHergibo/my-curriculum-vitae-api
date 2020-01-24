@@ -6,8 +6,9 @@ const Info = require('./../models/info.model'),
 */
 exports.add = async (req, res, next) =>{
     try{
-        console.log(req.body);
-        const info = new Info(req.body);
+        let dataUserId = req.body;
+        dataUserId.userId = req.user._id;
+        const info = new Info(dataUserId);
         await info.save();
         return res.json(info);
     }catch(error){

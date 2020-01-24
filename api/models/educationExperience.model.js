@@ -3,22 +3,27 @@ const Mongoose = require('mongoose');
 let Schema = Mongoose.Schema;
 
 let schema = new Schema({
-    yearBegin : {
+    dateStart : {
         type : Number,
         required : true,
         trim : true
     },
-    yearEnd : {
+    dateEnd : {
         type : Number,
         required : true,
         trim : true
     },
-    jobName : {
+    titleEducExpe : {
         type : String,
         required : true,
         trim : true
     },
-    nameCompany : {
+    placeEducExpe : {
+        type : String,
+        required : true,
+        trim : true
+    },
+    educExpe : {
         type : String,
         required : true,
         trim : true
@@ -30,4 +35,4 @@ let schema = new Schema({
     },
 });
 
-module.exports = Mongoose.model('Expe', schema);
+module.exports = Mongoose.model('EducExpe', schema);
