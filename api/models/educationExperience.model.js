@@ -4,12 +4,12 @@ let Schema = Mongoose.Schema;
 
 let schema = new Schema({
     dateStart : {
-        type : Number,
+        type : Date,
         required : true,
         trim : true
     },
     dateEnd : {
-        type : Number,
+        type : Date,
         required : true,
         trim : true
     },

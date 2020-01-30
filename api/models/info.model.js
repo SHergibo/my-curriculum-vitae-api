@@ -36,7 +36,7 @@ let schema = new Schema({
         }
     },
     birthdate : {
-        type : String,
+        type : Date,
         required : true,
         trim : true
     },
