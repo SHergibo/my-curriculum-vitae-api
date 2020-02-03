@@ -24,7 +24,8 @@ exports.findAllQuery = async (req, res, next) =>{
     try {
         const educExpe = await EducExpe.find({
             userId : userId,
-        });
+        })
+        .sort({dateStart: -1});
         return res.json(educExpe);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
