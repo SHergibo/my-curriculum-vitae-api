@@ -22,9 +22,10 @@ exports.add = async (req, res, next) =>{
 * GET all Skill by user id
 */
 exports.findAllQuery = async (req, res, next) =>{
+    let userId = req.user._id;
     try {
         const skill = await Skill.find({
-            userId : req.query.userId,
+            userId : userId,
         });
         return res.json(skill);
     } catch (error) {
