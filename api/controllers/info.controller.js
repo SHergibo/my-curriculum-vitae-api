@@ -19,9 +19,12 @@ exports.add = async (req, res, next) =>{
 /**
 * GET info
 */
-exports.findOne = async (req, res, next) =>{
+exports.find = async (req, res, next) =>{
+    let userId = req.user._id;
     try {
-        const info = await Info.findById(req.params.infoId);
+        const info = await Info.find({
+            userId : userId,
+        });
         return res.json(info);
     } catch (error) {
         next(Boom.badImplementation(error.message));        

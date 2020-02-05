@@ -8,11 +8,11 @@ const router = Express.Router();
 
 router
     .route('/')
-        .post(authorize([ADMIN, LOGGED_USER]), InfoController.add);
+        .post(authorize([ADMIN, LOGGED_USER]), InfoController.add)
+        .get(authorize([ADMIN, LOGGED_USER]), InfoController.find);
 
 router
     .route('/:infoId')
-        .get(authorize([ADMIN, LOGGED_USER]), InfoController.findOne)
         .patch(authorize([ADMIN, LOGGED_USER]), InfoController.update);
 
 module.exports = router;
