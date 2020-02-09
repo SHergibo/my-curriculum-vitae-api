@@ -20,11 +20,8 @@ exports.add = async (req, res, next) =>{
 * GET info
 */
 exports.find = async (req, res, next) =>{
-    let userId = req.user._id;
     try {
-        const info = await Info.find({
-            userId : userId,
-        });
+        const info = await Info.find();
         return res.json(info);
     } catch (error) {
         next(Boom.badImplementation(error.message));        

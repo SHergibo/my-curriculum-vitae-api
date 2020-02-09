@@ -12,7 +12,7 @@ router
 
 router
     .route('/skill-list')
-        .get(authorize([ADMIN, LOGGED_USER]), SkillController.findAllQuery);
+        .get(SkillController.findAllQuery);
 
 router
     .route('/:skillId')

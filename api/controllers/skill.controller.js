@@ -22,11 +22,8 @@ exports.add = async (req, res, next) =>{
 * GET all Skill by user id
 */
 exports.findAllQuery = async (req, res, next) =>{
-    let userId = req.user._id;
     try {
-        const skill = await Skill.find({
-            userId : userId,
-        });
+        const skill = await Skill.find();
         return res.json(skill);
     } catch (error) {
         next(Boom.badImplementation(error.message));        

@@ -9,7 +9,7 @@ const router = Express.Router();
 router
     .route('/')
         .post(authorize([ADMIN, LOGGED_USER]), InfoController.add)
-        .get(authorize([ADMIN, LOGGED_USER]), InfoController.find);
+        .get(InfoController.find);
 
 router
     .route('/:infoId')

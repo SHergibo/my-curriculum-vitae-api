@@ -20,11 +20,8 @@ exports.add = async (req, res, next) =>{
 * GET all Education/Experience by user id
 */
 exports.findAllQuery = async (req, res, next) =>{
-    let userId = req.user._id;
     try {
-        const educExpe = await EducExpe.find({
-            userId : userId,
-        })
+        const educExpe = await EducExpe.find()
         .sort({dateStart: -1});
         return res.json(educExpe);
     } catch (error) {

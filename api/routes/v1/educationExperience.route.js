@@ -12,7 +12,7 @@ router
 
 router
     .route('/educExpe-list')
-        .get(authorize([ADMIN, LOGGED_USER]), EducExpeController.findAllQuery);
+        .get(EducExpeController.findAllQuery);
 
 router
     .route('/:educExpeId')
