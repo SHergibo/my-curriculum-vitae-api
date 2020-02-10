@@ -3,6 +3,16 @@ const Mongoose = require('mongoose');
 let Schema = Mongoose.Schema;
 
 let schema = new Schema({
+    firstname : {
+        type : String,
+        required : true,
+        trim : true
+    },
+    lastname : {
+        type : String,
+        required : true,
+        trim : true
+    },
     phone : {
         type : String,
         required : true,
