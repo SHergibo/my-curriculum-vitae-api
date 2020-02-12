@@ -10,7 +10,7 @@ exports.add = async (req, res, next) =>{
         dataUserId.userId = req.user._id;
         const educExpe = new EducExpe(dataUserId);
         await educExpe.save();
-        return res.json(educExpe);
+        return res.json(educExpe.transformEducExpe());
     }catch(error){
         next(Boom.badImplementation(error.message));
     }
@@ -23,7 +23,16 @@ exports.findAllQuery = async (req, res, next) =>{
     try {
         const educExpe = await EducExpe.find()
         .sort({dateStart: -1});
-        return res.json(educExpe);
+        const fields = ['_id', 'dateStart', 'dateEnd', 'titleEducExpe', 'placeEducExpe', 'educExpe'];
+        let arrayEducExpeTransformed = [];
+        educExpe.forEach((item)=>{
+            const object = {};
+            fields.forEach((field)=>{
+                object[field] = item[field];
+            });
+            arrayEducExpeTransformed.push(object);
+        });
+        return res.json(arrayEducExpeTransformed);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -35,7 +44,7 @@ exports.findAllQuery = async (req, res, next) =>{
 exports.findOne = async (req, res, next) =>{
     try {
         const educExpe = await EducExpe.findById(req.params.educExpeId);
-        return res.json(educExpe);
+        return res.json(educExpe.transformEducExpe());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -47,7 +56,7 @@ exports.findOne = async (req, res, next) =>{
 exports.update = async (req, res, next) => {
     try {
         const educExpe = await EducExpe.findByIdAndUpdate(req.params.educExpeId,  req.body, {new : true});
-        return res.json(educExpe);
+        return res.json(educExpe.transformEducExpe());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -59,7 +68,7 @@ exports.update = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
     try {
         const educExpe = await EducExpe.findByIdAndDelete(req.params.educExpeId);
-        return res.json(educExpe);
+        return res.json(educExpe.transformEducExpe());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }

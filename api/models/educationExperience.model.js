@@ -35,4 +35,13 @@ let schema = new Schema({
     },
 });
 
+schema.methods.transformEducExpe = function() {
+    const fields = ['_id', 'dateStart', 'dateEnd', 'titleEducExpe', 'placeEducExpe', 'educExpe'];
+    const object = {};
+    fields.forEach((field)=>{
+        object[field] = this[field];
+    });
+    return object;
+};
+
 module.exports = Mongoose.model('EducExpe', schema);

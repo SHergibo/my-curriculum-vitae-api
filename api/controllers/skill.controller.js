@@ -11,7 +11,7 @@ exports.add = async (req, res, next) =>{
         dataUserId.userId = req.user._id;
         const skill = new Skill(dataUserId);
         await skill.save();
-        return res.json(skill);
+        return res.json(skill.transformSkill());
     }catch(error){
         console.log(error);
         next(Boom.badImplementation(error.message));
@@ -24,7 +24,16 @@ exports.add = async (req, res, next) =>{
 exports.findAllQuery = async (req, res, next) =>{
     try {
         const skill = await Skill.find();
-        return res.json(skill);
+        const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory'];
+        let arraySkillTransformed = [];
+        skill.forEach((item)=>{
+            const object = {};
+            fields.forEach((field)=>{
+                object[field] = item[field];
+            });
+            arraySkillTransformed.push(object);
+        });
+        return res.json(arraySkillTransformed);
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -36,7 +45,7 @@ exports.findAllQuery = async (req, res, next) =>{
 exports.findOne = async (req, res, next) =>{
     try {
         const skill = await Skill.findById(req.params.skillId);
-        return res.json(skill);
+        return res.json(skill.transformSkill());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -48,7 +57,7 @@ exports.findOne = async (req, res, next) =>{
 exports.update = async (req, res, next) => {
     try {
         const skill = await Skill.findByIdAndUpdate(req.params.skillId,  req.body, {new : true});
-        return res.json(skill);
+        return res.json(skill.transformSkill());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -60,7 +69,7 @@ exports.update = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
     try {
         const skill = await Skill.findByIdAndDelete(req.params.skillId);
-        return res.json(skill);
+        return res.json(skill.transformSkill());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }

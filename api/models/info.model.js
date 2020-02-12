@@ -67,4 +67,13 @@ let schema = new Schema({
     },
 });
 
+schema.methods.transformInfo = function() {
+    const fields = ['_id', 'firstname', 'lastname', 'phone', 'email', 'address', 'birthdate', "licence", "description"];
+    const object = {};
+    fields.forEach((field)=>{
+        object[field] = this[field];
+    });
+    return object;
+};
+
 module.exports = Mongoose.model('Info', schema);

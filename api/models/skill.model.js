@@ -27,4 +27,13 @@ let schema = new Schema({
     },
 });
 
+schema.methods.transformSkill = function() {
+    const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory'];
+    const object = {};
+    fields.forEach((field)=>{
+        object[field] = this[field];
+    });
+    return object;
+};
+
 module.exports = Mongoose.model('Skill', schema);

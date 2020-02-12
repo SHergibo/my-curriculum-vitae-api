@@ -10,7 +10,7 @@ exports.add = async (req, res, next) =>{
         dataUserId.userId = req.user._id;
         const info = new Info(dataUserId);
         await info.save();
-        return res.json(info);
+        return res.json(info.transformInfo());
     }catch(error){
         next(Boom.badImplementation(error.message));
     }
@@ -21,8 +21,8 @@ exports.add = async (req, res, next) =>{
 */
 exports.find = async (req, res, next) =>{
     try {
-        const info = await Info.find();
-        return res.json(info);
+        const info = await Info.findOne();
+        return res.json(info.transformInfo());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
@@ -34,7 +34,7 @@ exports.find = async (req, res, next) =>{
 exports.update = async (req, res, next) => {
     try {
         const info = await Info.findByIdAndUpdate(req.params.infoId,  req.body, {new : true});
-        return res.json(info);
+        return res.json(info.transformInfo());
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
