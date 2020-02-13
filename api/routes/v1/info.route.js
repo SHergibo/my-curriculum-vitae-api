@@ -13,6 +13,7 @@ router
 
 router
     .route('/:infoId')
-        .patch(authorize([ADMIN, LOGGED_USER]), InfoController.update);
+        .patch(authorize([ADMIN, LOGGED_USER]), InfoController.update)
+        .delete(authorize([ADMIN, LOGGED_USER]), InfoController.remove);
 
 module.exports = router;
