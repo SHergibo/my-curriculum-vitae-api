@@ -6,14 +6,12 @@ const Skill = require('./../models/skill.model'),
 */
 exports.add = async (req, res, next) =>{
     try{
-        console.log(req.body);
         let dataUserId = req.body;
         dataUserId.userId = req.user._id;
         const skill = new Skill(dataUserId);
         await skill.save();
         return res.json(skill.transformSkill());
     }catch(error){
-        console.log(error);
         next(Boom.badImplementation(error.message));
     }
 };
@@ -45,7 +43,11 @@ exports.findAllQuery = async (req, res, next) =>{
 exports.findOne = async (req, res, next) =>{
     try {
         const skill = await Skill.findById(req.params.skillId);
-        return res.json(skill.transformSkill());
+        if(skill){
+            return res.json(skill.transformSkill());
+        }else{
+            return res.json(skill);
+        }
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }

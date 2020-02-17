@@ -16,7 +16,6 @@ exports.notify = (err, str, req) => {
 };
 
 exports.exit = (err, req, res, next) =>{
-    console.log(err);
     let code = typeof(err.output.statusCode) !== 'undefined' ? err.output.statusCode : 500;
     res.status(code);
     res.json(err);

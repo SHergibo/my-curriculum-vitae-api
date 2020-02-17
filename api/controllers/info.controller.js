@@ -48,7 +48,6 @@ exports.update = async (req, res, next) => {
 * DELETE info
 */
 exports.remove = async (req, res, next) => {
-    console.log(req);
     try {
         const info = await Info.findByIdAndDelete(req.params.infoId);
         return res.json(info);

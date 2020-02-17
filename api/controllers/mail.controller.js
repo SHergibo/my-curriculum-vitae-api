@@ -44,7 +44,7 @@ exports.send = async (req, res, next) => {
     transporter.sendMail(mailOptions, (error, info) => {
       
       if (error) {
-        return console.log(error);
+        return error;
       }else{
         return res.json({status : "200"});
       }

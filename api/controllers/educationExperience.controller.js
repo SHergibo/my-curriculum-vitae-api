@@ -44,7 +44,11 @@ exports.findAllQuery = async (req, res, next) =>{
 exports.findOne = async (req, res, next) =>{
     try {
         const educExpe = await EducExpe.findById(req.params.educExpeId);
-        return res.json(educExpe.transformEducExpe());
+        if(educExpe){
+            return res.json(educExpe.transformEducExpe());
+        }else{
+            return res.json(educExpe);
+        }
     } catch (error) {
         next(Boom.badImplementation(error.message));        
     }
