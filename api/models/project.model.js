@@ -28,7 +28,7 @@ let schema = new Schema({
         required : true,
     },
     url : {
-        type : string,
+        type : String,
         required : true,
         trim : true
     },
