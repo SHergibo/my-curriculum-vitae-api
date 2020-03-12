@@ -3,7 +3,7 @@ const Mongoose = require('mongoose');
 let Schema = Mongoose.Schema;
 
 let schema = new Schema({
-    title : {
+    projectName : {
         type : String,
         required : true,
         trim : true
@@ -14,6 +14,11 @@ let schema = new Schema({
         trim : true
     },
     img : {
+        type : String,
+        required : true,
+        trim : true
+    },
+    altImg : {
         type : String,
         required : true,
         trim : true
