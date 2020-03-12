@@ -4,6 +4,7 @@ const Express = require('express'),
       InfoRoutes = require('./info.route'),
       EducExpeRoutes = require('./educationExperience.route'),
       SkillRoutes = require('./skill.route'),
+      ProjectRoutes = require('./project.route'),
       AuthRoutes = require('./auth.route'),
       TokenAuthRoutes = require('./token-auth.route');
 
@@ -17,6 +18,7 @@ router.use('/mail', MailRoutes);
 router.use('/info', InfoRoutes);
 router.use('/educExpe', EducExpeRoutes);
 router.use('/skill', SkillRoutes);
+router.use('/project', ProjectRoutes);
 router.use('/tokens', TokenAuthRoutes);
 
 module.exports = router;
