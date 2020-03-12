@@ -22,6 +22,11 @@ let schema = new Schema({
         type : Array,
         required : true,
     },
+    url : {
+        type : string,
+        required : true,
+        trim : true
+    },
     userId : {
         type : Schema.Types.ObjectId,
         ref : 'User',
