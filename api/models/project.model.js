@@ -25,7 +25,7 @@ let schema = new Schema({
     },
     technoUsed : {
         type : Array,
-        required : true,
+        // required : true,
     },
     url : {
         type : String,

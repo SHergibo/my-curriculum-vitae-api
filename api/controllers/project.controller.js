@@ -1,19 +1,55 @@
 const Project = require('./../models/project.model'),
       Boom = require('boom');
 
+const mongoose = require('mongoose');
+const Grid = require('gridfs-stream');
+const { mongo } = require('./../../config/environment.config');
+
+
+const UploadImg = require('./../middlewares/uploadImg.middleware');
+
+
+
 /**
 * Post project
 */
 exports.add = async (req, res, next) =>{
-    try{
-        let dataUserId = req.body;
-        dataUserId.userId = req.user._id;
-        const project = new Project(dataUserId);
-        await project.save();
-        return res.json(project.transformProject());
-    }catch(error){
-        next(Boom.badImplementation(error.message));
-    }
+    let test = await UploadImg(req, res);
+    console.log(req.body);
+    console.log(req.file);
+
+    const conn = mongoose.createConnection(mongo.uri);
+    Grid.mongo = mongoose.mongo;
+    let gfs;
+
+    conn.once("open", () => {
+        console.log("ici");
+        gfs = Grid(conn.db);
+        gfs.collection('images');
+
+
+        gfs.files.findOne({ filename: "1584646888193-Hergibo_Sacha.jpg" }, (err, file) => {
+            console.log(file);
+          });
+    });
+
+    // if(mongoose.connection.readyState === 1){
+    //     gfs = Grid(mongoose.connection.db, mongoose.mongo);
+    //     gfs.collection('uploads');
+    // }
+
+
+
+    return res.json({status : "200"});
+    // try{
+    //     let dataUserId = req.body;
+    //     dataUserId.userId = req.user._id;
+    //     const project = new Project(dataUserId);
+    //     await project.save();
+    //     return res.json(project.transformProject());
+    // }catch(error){
+    //     next(Boom.badImplementation(error.message));
+    // }
 };
 
 /**
