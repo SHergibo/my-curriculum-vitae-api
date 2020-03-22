@@ -30,37 +30,46 @@ exports.add = async (req, res, next) =>{
 };
 
 /**
-* GET project
+* GET all project
 */
-exports.find = async (req, res, next) =>{
-    // try {
-    //     const project = await Project.findOne();
-    //     if(project){
-    //         return res.json(project.transformProject());
-    //     }else{
-    //         return res.json(project);
-    //     }
-    // } catch (error) {
-    //     next(Boom.badImplementation(error.message));        
-    // }
+exports.findAll = async (req, res, next) =>{
+    try {
+        const project = await Project.find();
+        const fields = ['_id', 'projectName', 'description', 'img', 'altImg', 'technoUsed', 'url'];
+        let arraySkillTransformed = [];
+        project.forEach((item)=>{
+            const object = {};
+            fields.forEach((field)=>{
+                object[field] = item[field];
+            });
+            arraySkillTransformed.push(object);
+        });
+        return res.json(arraySkillTransformed);
+    } catch (error) {
+        next(Boom.badImplementation(error.message));        
+    }
 };
 
 /**
 * GET project img
 */
 exports.findImg = async (req, res, next) =>{
-    const conn = mongoose.createConnection(mongo.uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
-
-    let gridFSBucket;
-    conn.once("open", () => {
-        gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-            bucketName: "images"
+    try {
+        const conn = mongoose.createConnection(mongo.uri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         });
-        gridFSBucket.openDownloadStreamByName(req.params.imgName).pipe(res);
-    });
+    
+        let gridFSBucket;
+        conn.once("open", () => {
+            gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                bucketName: "images"
+            });
+            gridFSBucket.openDownloadStreamByName(req.params.imgName).pipe(res);
+        });
+    } catch (error) {
+        next(Boom.badImplementation(error.message));
+    }
 };
 
 /**
@@ -68,7 +77,31 @@ exports.findImg = async (req, res, next) =>{
 */
 exports.update = async (req, res, next) => {
     try {
-        const project = await Project.findByIdAndUpdate(req.params.projectId,  req.body, {new : true});
+        await UploadImg(req, res);
+        let body = req.body;
+        const projectImg = await Project.findById(req.params.projectId);
+        if(req.file){
+            
+            const conn = mongoose.createConnection(mongo.uri, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            });
+        
+            let gridFSBucket;
+            conn.once("open", () => {
+                gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+                    bucketName: "images"
+                });
+                gridFSBucket.delete(projectImg.img.id, (err) => {});
+            });
+            body.img = {
+                "filename" : req.file.filename,
+                "id" : req.file.id
+            }
+        }else{
+            body.img = projectImg.img;
+        }
+        const project = await Project.findByIdAndUpdate(req.params.projectId,  body, {new : true});
         return res.json(project.transformProject());
     } catch (error) {
         next(Boom.badImplementation(error.message));        

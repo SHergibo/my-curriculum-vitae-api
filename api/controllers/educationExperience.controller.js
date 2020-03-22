@@ -17,9 +17,9 @@ exports.add = async (req, res, next) =>{
 };
 
 /**
-* GET all Education/Experience by user id
+* GET all Education/Experience
 */
-exports.findAllQuery = async (req, res, next) =>{
+exports.findAll = async (req, res, next) =>{
     try {
         const educExpe = await EducExpe.find()
         .sort({dateStart: -1});

@@ -12,7 +12,7 @@ router
 
 router
     .route('/skill-list')
-        .get(SkillController.findAllQuery);
+        .get(SkillController.findAll);
 
 router
     .route('/:skillId')

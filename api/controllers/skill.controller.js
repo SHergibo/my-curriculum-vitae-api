@@ -17,9 +17,9 @@ exports.add = async (req, res, next) =>{
 };
 
 /**
-* GET all Skill by user id
+* GET all Skill
 */
-exports.findAllQuery = async (req, res, next) =>{
+exports.findAll = async (req, res, next) =>{
     try {
         const skill = await Skill.find();
         const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory'];

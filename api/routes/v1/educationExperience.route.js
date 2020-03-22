@@ -12,7 +12,7 @@ router
 
 router
     .route('/educExpe-list')
-        .get(EducExpeController.findAllQuery);
+        .get(EducExpeController.findAll);
 
 router
     .route('/:educExpeId')

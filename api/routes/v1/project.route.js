@@ -8,13 +8,16 @@ const router = Express.Router();
 
 router
     .route('/')
-        .post(authorize([ADMIN, LOGGED_USER]), ProjectController.add)
-        .get(ProjectController.find);
+        .post(authorize([ADMIN, LOGGED_USER]), ProjectController.add);
 
 router
     .route('/:projectId')
         .patch(authorize([ADMIN, LOGGED_USER]), ProjectController.update)
-        .delete( ProjectController.remove); //TO DO remettre authorize
+        .delete(authorize([ADMIN, LOGGED_USER]), ProjectController.remove);
+
+router
+    .route('/project-list')
+        .get(ProjectController.findAll);
 
 router
     .route('/image/:imgName')
