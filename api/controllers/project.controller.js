@@ -21,6 +21,8 @@ exports.add = async (req, res, next) =>{
             "filename" : req.file.filename,
             "id" : req.file.id
         };
+        dataUserId.technoUsedFront = JSON.parse(req.body.technoUsedFront);
+        dataUserId.technoUsedBack = JSON.parse(req.body.technoUsedBack);
         const project = new Project(dataUserId);
         await project.save();
         return res.json(project.transformProject());
@@ -35,7 +37,7 @@ exports.add = async (req, res, next) =>{
 exports.findAll = async (req, res, next) =>{
     try {
         const project = await Project.find();
-        const fields = ['_id', 'projectName', 'description', 'img', 'altImg', 'technoUsed', 'url'];
+        const fields = ['_id', 'projectName', 'description', 'img', 'altImg', 'technoUsedFront', 'technoUsedBack', 'url'];
         let arraySkillTransformed = [];
         project.forEach((item)=>{
             const object = {};
@@ -79,6 +81,8 @@ exports.update = async (req, res, next) => {
     try {
         await UploadImg(req, res);
         let body = req.body;
+        body.technoUsedFront = JSON.parse(req.body.technoUsedFront);
+        body.technoUsedBack = JSON.parse(req.body.technoUsedBack);
         const projectImg = await Project.findById(req.params.projectId);
         if(req.file){
             

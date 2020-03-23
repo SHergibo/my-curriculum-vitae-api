@@ -23,9 +23,13 @@ let schema = new Schema({
         required : true,
         trim : true
     },
-    technoUsed : {
-        type : Array,
-        // required : true,
+    technoUsedFront : {
+        type : Object,
+        required : true,
+    },
+    technoUsedBack : {
+        type : Object,
+        required : true,
     },
     url : {
         type : String,
@@ -40,7 +44,7 @@ let schema = new Schema({
 });
 
 schema.methods.transformProject = function() {
-    const fields = ['_id', 'title', 'description', 'img', 'technoUsed'];
+    const fields = ['_id', 'projectName', 'description', 'img', "altImg", 'technoUsedFront', 'technoUsedBack', 'url'];
     const object = {};
     fields.forEach((field)=>{
         object[field] = this[field];
