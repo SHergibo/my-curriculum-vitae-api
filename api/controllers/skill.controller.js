@@ -1,5 +1,5 @@
 const Skill = require('./../models/skill.model'),
-      Boom = require('boom');
+      Boom = require('@hapi/boom');
 
 /**
 * Post one Skill

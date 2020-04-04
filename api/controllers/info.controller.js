@@ -1,5 +1,5 @@
 const Info = require('./../models/info.model'),
-      Boom = require('boom');
+      Boom = require('@hapi/boom');
 
 /**
 * Post info

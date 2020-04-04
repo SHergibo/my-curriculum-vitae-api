@@ -1,5 +1,5 @@
 const EducExpe = require('./../models/educationExperience.model'),
-      Boom = require('boom');
+      Boom = require('@hapi/boom');
 
 /**
 * Post one Education/Experience

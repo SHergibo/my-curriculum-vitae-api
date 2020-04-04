@@ -1,5 +1,5 @@
 const Project = require('./../models/project.model'),
-      Boom = require('boom');
+      Boom = require('@hapi/boom');
 
 const mongoose = require('mongoose');
 const { mongo } = require('./../../config/environment.config');
