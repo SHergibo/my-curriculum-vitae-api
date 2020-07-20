@@ -47,7 +47,7 @@ exports.register = async (req, res, next) => {
 };
 
 /**
- * Connect user if valid username and password is provided
+ * Connect user if valid username and password are provided
  * 
  * @param {Object} req
  * @param {Object} res
