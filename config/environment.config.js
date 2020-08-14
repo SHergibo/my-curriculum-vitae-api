@@ -2,7 +2,6 @@ const Dotenv = require('dotenv');
 
 const environments = {DEVELOPMENT : "DEVELOPMENT", STAGING : "STAGING", PRODUCTION : "PRODUCTION"};
 const environment = process.argv[2] && typeof(process.argv[2]) !== 'undefined' ? process.argv[2].split('-')[1] : 'development';
-//TODO attention qu'avec pm2 le process.argv[2] ne devienne [3], trouver un autre moyen pour passer -production, utiliser NODE_ENV
 
 Dotenv.config({path : `${process.cwd()}/${environment}.env`});
 
