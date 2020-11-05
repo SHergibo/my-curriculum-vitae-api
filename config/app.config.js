@@ -22,7 +22,13 @@ app.use( Express.json() );
 app.use( Express.urlencoded({extended:true}));
 
 app.use(Cors({
-    origin: CorsOrigin
+    origin: function (origin, callback) {
+        if (CorsOrigin.indexOf(origin) !== -1) {
+          callback(null, true)
+        } else {
+          callback(new Error('Not allowed by CORS'))
+        }
+      }
 }));
 
 app.use( Passport.initialize() );
