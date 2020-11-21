@@ -60,11 +60,14 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const checkRole = await User.findOne({email : req.body.email});
-    if(checkRole !== "undefined"){
+    if(checkRole.role !== "ghost"){
       const { user, accessToken } = await User.findAndGenerateToken(req.body);
       const token = _generateTokenResponse(user, accessToken);
       return res.json({ token, user: user.transform() });
+    }else{
+      return next(Boom.forbidden('Please, verify your account first'));
     }
+    
   } catch (error) {
     return next(error);
   }
