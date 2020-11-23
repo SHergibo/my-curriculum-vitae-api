@@ -1,5 +1,6 @@
 const Mongoose = require('mongoose');
 const {loggerError, loggerInfo} = require('./logger.config');
+const NodeMailer = require('./../api/helpers/nodemailer.helper');
 
 const { mongo, env, environments } = require('./environment.config');
 
@@ -11,6 +12,7 @@ Mongoose.set('useCreateIndex', true);
 Mongoose.connection.on('error', (err) =>{
     if(env.toUpperCase() === environments.PRODUCTION){
         loggerError.error(`MongoDB connection error: ${err}`);
+        NodeMailer.send(error, 'Une erreur est survenue lors de la connection à MongoDB !');
     }else{
         console.log(err)
     }

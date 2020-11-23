@@ -47,7 +47,9 @@ exports.send = async (output, subject, res) => {
         loggerError.error(error);
         return error;
       }else{
-        return res.json({status : 200});
+        if(res){
+          return res.json({status : 200});
+        }
       }
     });
 
