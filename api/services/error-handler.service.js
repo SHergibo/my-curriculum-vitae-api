@@ -17,15 +17,11 @@ exports.notify = (err, str, req) => {
 };
 
 exports.exit = (err, req, res, next) =>{
-    let code;
+    let code = 500;
     if(err.output){
         code = err.output.statusCode;
-    }else{
-        if(err.httpsStatusCode){
-            code = err.httpsStatusCode;
-        }else{
-            code = 500;
-        }
+    }else if (err.httpsStatusCode){
+        code = err.httpsStatusCode;
     }
     res.status(code);
     res.json(err);
