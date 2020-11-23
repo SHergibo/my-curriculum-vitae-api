@@ -17,7 +17,16 @@ exports.notify = (err, str, req) => {
 };
 
 exports.exit = (err, req, res, next) =>{
-    let code = typeof(err.output.statusCode) !== 'undefined' ? err.output.statusCode : 500;
+    let code;
+    if(err.output){
+        code = err.output.statusCode;
+    }else{
+        if(err.httpsStatusCode){
+            code = err.httpsStatusCode;
+        }else{
+            code = 500;
+        }
+    }
     res.status(code);
     res.json(err);
 };
