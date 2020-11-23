@@ -1,16 +1,9 @@
-const Mail = require('./../models/mail.model'),
-      NodeMailer = require('nodemailer'),
-      config = require('./../../config/secrets'),
-      { google } = require('googleapis'),
-      { OAuth2 } = google.auth,
-      OAUTH_PLAYGROUND = 'https://developers.google.com/oauthplayground';
+const NodeMailer = require('./../../api/helpers/nodemailer.helper');
 
 /**
 * Send mail
 */
 exports.send = async (req, res, next) => {
-  const { MAIL, CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } = config;
-
   try {
     const output = `
       <p>You have a new contact request</p>
@@ -24,47 +17,8 @@ exports.send = async (req, res, next) => {
       <h3>Message</h3>
       <p>${req.body.message}</p>
       `;
-    
-    const oauth2Client = new OAuth2(
-      CLIENT_ID,
-      CLIENT_SECRET,
-      OAUTH_PLAYGROUND
-    );
 
-    oauth2Client.setCredentials({
-      refresh_token: REFRESH_TOKEN,
-    });
-    const accessToken = oauth2Client.getAccessToken();
-
-    let transporter = NodeMailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: MAIL,
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken,
-      }
-    });
-
-
-    let mailOptions = {
-      from: `"Site web cv" <${MAIL}>`,
-      to: `${MAIL}`,
-      subject: 'Message received',
-      text: 'Hello world?',
-      html: output
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      
-      if (error) {
-        return error;
-      }else{
-        return res.json({status : "200"});
-      }
-    });
+      NodeMailer.send(output, "Vous avez reçu un message sur votre site CV !", res);
 
   } catch (error) {
     next(error);
