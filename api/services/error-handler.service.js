@@ -1,5 +1,6 @@
 const {loggerError} = require('../../config/logger.config'),
       Notifier = require('node-notifier'),
+      { env, environments } = require('./../../config/environment.config');
       Boom = require('@hapi/boom');
 
 exports.log = (err, req, res, next) =>{
@@ -18,13 +19,16 @@ exports.notify = (err, str, req) => {
 
 exports.exit = (err, req, res, next) =>{
     let code = 500;
-    if(err.output){
-        code = err.output.statusCode;
-    }else if (err.httpsStatusCode){
-        code = err.httpsStatusCode;
+    let errorBoom = err;
+    if (err.boom) errorBoom = err.boom;
+    if (errorBoom.output) code = errorBoom.output.statusCode;
+    if (errorBoom.httpsStatusCode) code = errorBoom.httpsStatusCode;
+    if (env.toUpperCase() === environments.DEVELOPMENT) {
+      if (err.error) console.log(err.error);
+      console.log(errorBoom);
     }
     res.status(code);
-    res.json(err);
+    res.json(errorBoom);
 };
 
 exports.notFound = (req, res, next) => {
