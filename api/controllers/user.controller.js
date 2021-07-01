@@ -1,7 +1,6 @@
 const User = require('./../models/user.model'),
       Boom = require('@hapi/boom'),
       Bcrypt = require('bcrypt'),
-      TokenAuth = require('./../models/token-auth.model'),
       { env } = require('../../config/environment.config');
 
 /**
@@ -11,7 +10,6 @@ exports.add = async (req, res, next) =>{
     try{
         const user = new User(req.body);
         await user.save();
-        await TokenAuth.generate(user);
         return res.json(user.transform());
     }catch(error){
         next(User.checkDuplicateEmail(error));
