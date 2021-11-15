@@ -33,11 +33,11 @@ exports.findOne = async (req, res, next) =>{
 */
 exports.update = async (req, res, next) => {
     try {
-        if(req.body.password){
-            let salt = env === 'staging' ? 1 : 10;
-            let hash = await Bcrypt.hash(req.body.password, salt);
-            req.body.password = hash;
-        }
+        // if(req.body.password){
+        //     let salt = env === 'staging' ? 1 : 10;
+        //     let hash = await Bcrypt.hash(req.body.password, salt);
+        //     req.body.password = hash;
+        // }
         const user = await User.findByIdAndUpdate(req.params.userId,  req.body, {override : true, upsert : true, new : true});
         return res.json(user.transform());
     } catch (error) {
