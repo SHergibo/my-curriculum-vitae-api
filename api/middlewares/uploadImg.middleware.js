@@ -1,11 +1,10 @@
 const util = require("util");
 const multer = require("multer");
-const GridFsStorage = require("multer-gridfs-storage");
+const {GridFsStorage} = require("multer-gridfs-storage");
 const { mongo } = require('./../../config/environment.config');
 
 let storage = new GridFsStorage({
   url: mongo.uri,
-  options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
     const match = ["image/png", "image/jpeg"];
 
