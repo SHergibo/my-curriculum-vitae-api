@@ -57,10 +57,7 @@ exports.findAll = async (req, res, next) =>{
 */
 exports.findImg = async (req, res, next) =>{
     try {
-        const conn = mongoose.createConnection(mongo.uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        const conn = mongoose.createConnection(mongo.uri, {});
     
         let gridFSBucket;
         conn.once("open", () => {
@@ -86,10 +83,7 @@ exports.update = async (req, res, next) => {
         const projectImg = await Project.findById(req.params.projectId);
         if(req.file){
             
-            const conn = mongoose.createConnection(mongo.uri, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            });
+            const conn = mongoose.createConnection(mongo.uri, {});
         
             let gridFSBucket;
             conn.once("open", () => {
@@ -118,10 +112,7 @@ exports.update = async (req, res, next) => {
 exports.remove = async (req, res, next) => {
     try {
         const projectImg = await Project.findById(req.params.projectId);
-        const conn = mongoose.createConnection(mongo.uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        const conn = mongoose.createConnection(mongo.uri, {});
     
         let gridFSBucket;
         conn.once("open", () => {
