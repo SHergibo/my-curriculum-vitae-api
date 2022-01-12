@@ -53,6 +53,36 @@ exports.findAll = async (req, res, next) =>{
 };
 
 /**
+* GET project list with pagination
+*/
+exports.findPaginate = async (req, res, next) => {
+  try {
+    const page = req.query.page;
+    const pageSize = 6;
+
+    const totalData = await Project.countDocuments();
+
+    const project = await Project.find()
+      .skip(page * pageSize)
+      .limit(pageSize)
+      .sort({ createdAt: -1 });
+
+    const fields = ['_id', 'projectName', 'description', 'img', 'altImg', 'technoUsedFront', 'technoUsedBack', 'url'];
+    let arraySkillTransformed = [];
+    project.forEach((item)=>{
+        const object = {};
+        fields.forEach((field)=>{
+            object[field] = item[field];
+        });
+        arraySkillTransformed.push(object);
+    });
+    return res.json({arrayData : arraySkillTransformed, totalData});
+  } catch (error) {
+    next(Boom.badImplementation(error.message));
+  }
+};
+
+/**
 * GET project img
 */
 exports.findImg = async (req, res, next) =>{
