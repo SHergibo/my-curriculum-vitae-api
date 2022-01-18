@@ -31,7 +31,11 @@ let schema = new Schema({
     type: Object,
     required: true,
   },
-  url: {
+  urlWeb: {
+    type: String,
+    trim: true
+  },
+  urlGithub: {
     type: String,
     required: true,
     trim: true
@@ -46,7 +50,7 @@ let schema = new Schema({
 });
 
 schema.methods.transformProject = function () {
-  const fields = ['_id', 'projectName', 'description', 'img', "altImg", 'technoUsedFront', 'technoUsedBack', 'url'];
+  const fields = ['_id', 'projectName', 'description', 'img', "altImg", 'technoUsedFront', 'technoUsedBack', 'urlWeb', 'urlGithub'];
   const object = {};
   fields.forEach((field) => {
     object[field] = this[field];
