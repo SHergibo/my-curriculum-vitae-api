@@ -20,6 +20,12 @@ let schema = new Schema({
         enum : SkillCategory,
         required : true
     },
+    fontAwesomeIcon : {
+        type : String,
+    },
+    svgIcon : {
+        type : String,
+    },
     userId : {
         type : Schema.Types.ObjectId,
         ref : 'User',
@@ -28,7 +34,7 @@ let schema = new Schema({
 });
 
 schema.methods.transformSkill = function() {
-    const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory'];
+    const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory', 'fontAwesomeIcon', 'svgIcon'];
     const object = {};
     fields.forEach((field)=>{
         object[field] = this[field];
