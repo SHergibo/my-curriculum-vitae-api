@@ -22,7 +22,7 @@ exports.add = async (req, res, next) =>{
 exports.findAll = async (req, res, next) =>{
     try {
         const skill = await Skill.find();
-        const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory'];
+        const fields = ['_id', 'nameSkill', 'percentage', 'skillCategory', 'fontAwesomeIcon', 'svgIcon'];
         let arraySkillTransformed = [];
         skill.forEach((item)=>{
             const object = {};
