@@ -1,4 +1,4 @@
-# Food ledger REST API
+# Cv-2020-back REST API
 
 Cv-2020-back API is a simple REST API developed using Node.js, Express and MongoDB. This API is used to store and show of your contact informations, job experiences, education experiences, skills and projects. If you want, you can use [cv-2020](https://github.com/SHergibo/cv-2020) with this API to be able to directly use all the functionality of this API on your browser.
 
