@@ -5,19 +5,16 @@ const Express = require("express"),
   EducExpeRoutes = require("./educationExperience.route"),
   SkillRoutes = require("./skill.route"),
   ProjectRoutes = require("./project.route"),
-  AuthRoutes = require("./auth.route"),
-  TokenAuthRoutes = require("./token-auth.route");
+  AuthRoutes = require("./auth.route");
 
 const router = Express.Router();
 
-router.get("/status", (req, res) => res.send(200));
-
 router.use("/auth", AuthRoutes);
 router.use("/users", UserRoutes);
-router.use("/mail", MailRoutes);
-router.use("/info", InfoRoutes);
-router.use("/educExpe", EducExpeRoutes);
-router.use("/skill", SkillRoutes);
-router.use("/project", ProjectRoutes);
+router.use("/mails", MailRoutes);
+router.use("/infos", InfoRoutes);
+router.use("/educs-exps", EducExpeRoutes);
+router.use("/skills", SkillRoutes);
+router.use("/projects", ProjectRoutes);
 
 module.exports = router;
