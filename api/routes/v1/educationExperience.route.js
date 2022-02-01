@@ -1,23 +1,22 @@
-const Express = require('express'),
-      EducExpeController = require(`${process.cwd()}/api/controllers/educationExperience.controller`);
+const Express = require("express"),
+  EducExpeController = require(`${process.cwd()}/api/controllers/educationExperience.controller`);
 
-const { authorize, ADMIN, LOGGED_USER } = require('../../middlewares/auth.middleware');
-
+const {
+  authorize,
+  ADMIN,
+  LOGGED_USER,
+} = require("../../middlewares/auth.middleware");
 
 const router = Express.Router();
 
-router
-    .route('/')
-        .post(authorize([ADMIN, LOGGED_USER]), EducExpeController.add);
+router.route("/").post(authorize([ADMIN, LOGGED_USER]), EducExpeController.add);
+
+router.route("/educs-exps-list").get(EducExpeController.findAll);
 
 router
-    .route('/educExpe-list')
-        .get(EducExpeController.findAll);
-
-router
-    .route('/:educExpeId')
-        .get(authorize([ADMIN, LOGGED_USER]), EducExpeController.findOne)
-        .patch(authorize([ADMIN, LOGGED_USER]), EducExpeController.update)
-        .delete(authorize([ADMIN, LOGGED_USER]), EducExpeController.remove);
+  .route("/:educExpeId")
+  .get(authorize([ADMIN, LOGGED_USER]), EducExpeController.findOne)
+  .patch(authorize([ADMIN, LOGGED_USER]), EducExpeController.update)
+  .delete(authorize([ADMIN, LOGGED_USER]), EducExpeController.remove);
 
 module.exports = router;
