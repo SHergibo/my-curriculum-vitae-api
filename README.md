@@ -91,7 +91,7 @@ npm run start
 
 ## Endpoints
 
-See cv-2020 endpoints [here](https://github.com/SHergibo/cv-2020/tree/master/readme-api-endpoints/api-endpoints.md)
+See cv-2020-back endpoints [here](https://github.com/SHergibo/cv-2020-back/blob/master/readme-api-endpoints/api-endpoints.md)
 
 ## License
 
