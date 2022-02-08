@@ -1,4 +1,4 @@
-## Food ledger API Endpoints
+## My-curriculum-vitae API Endpoints
 
 ### Auth
 
