@@ -1,6 +1,6 @@
-# Cv-2020-back REST API
+# My-curriculum-vitae REST API
 
-Cv-2020-back API is a simple REST API developed using Node.js, Express and MongoDB. This API is used to store and show of your contact informations, job experiences, education experiences, skills and projects. If you want, you can use [cv-2020](https://github.com/SHergibo/cv-2020) with this API to be able to directly use all the functionality of this API on your browser.
+My-curriculum-vitae API is a simple REST API developed using Node.js, Express and MongoDB. This API is used to store and show of your contact informations, job experiences, education experiences, skills and projects. If you want, you can use [my-curriculum-vitae](https://github.com/SHergibo/my-curriculum-vitae.git) with this API to be able to directly use all the functionality of this API on your browser.
 
 ## Features
 
@@ -26,8 +26,8 @@ Cv-2020-back API is a simple REST API developed using Node.js, Express and Mongo
 #### 1) Clone the repo
 
 ```bash
-git clone https://github.com/SHergibo/cv-2020-back.git
-cd cv-2020-back
+git clone https://github.com/SHergibo/my-curriculum-vitae-api.git
+cd my-curriculum-vitae-api
 rm -rf .git
 ```
 
@@ -91,7 +91,7 @@ npm run start
 
 ## Endpoints
 
-See cv-2020-back endpoints [here](https://github.com/SHergibo/cv-2020-back/blob/master/readme-api-endpoints/api-endpoints.md)
+See my-curriculum-vitae-api endpoints [here](https://github.com/SHergibo/my-curriculum-vitae-api/blob/master/readme-api-endpoints/api-endpoints.md)
 
 ## License
 
