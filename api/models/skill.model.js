@@ -5,6 +5,26 @@ let Schema = Mongoose.Schema;
 
 const SkillCategory = ["generalSkill", "codingSkill", "language"];
 
+let fontAwesomeIconSchema = new Schema(
+  {
+    label: {
+      type: String,
+      trim: true,
+    },
+    value: {
+      type: String,
+      trim: true,
+    },
+    prefix: {
+      type: String,
+      trim: true,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 let schema = new Schema({
   nameSkill: {
     type: String,
@@ -17,7 +37,7 @@ let schema = new Schema({
     required: true,
   },
   fontAwesomeIcon: {
-    type: String,
+    type: fontAwesomeIconSchema,
   },
   svgIcon: {
     type: String,
