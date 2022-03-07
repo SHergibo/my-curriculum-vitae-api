@@ -1,6 +1,6 @@
 # My-curriculum-vitae REST API
 
-My-curriculum-vitae API is a simple REST API developed using Node.js, Express and MongoDB. This API is used to store and show of your contact informations, job experiences, education experiences, skills and projects. If you want, you can use [my-curriculum-vitae](https://github.com/SHergibo/my-curriculum-vitae.git) with this API to be able to directly use all the functionality of this API on your browser.
+My-curriculum-vitae API is a simple REST API developed using Node.js, Express and MongoDB. This API is used to store and display your contact informations, job experiences, education experiences, skills and projects. If you want, you can use [my-curriculum-vitae](https://github.com/SHergibo/my-curriculum-vitae.git) with this API to be able to use all the features of this API directly on your browser.
 
 ## Features
 
@@ -35,7 +35,7 @@ rm -rf .git
 
 Rename `development-sample.env` and `production-sample.env` to `development.env` and `production.env`.
 
-In these files, you need to add your `JWT_SECRET`, you can alse change your DB name in `MONGO_URI`, for example `mongodb://localhost:27017/my-rest-api`.
+In these files, you need to add your `JWT_SECRET`, you can also change your DB name in `MONGO_URI`, for example `mongodb://localhost:27017/my-rest-api`.
 
 In `production.env`, you can add one or multiple urls in `CORS_ORIGIN` for security reasons. Only those urls will have access to the REST API.
 
@@ -45,7 +45,7 @@ for multiple urls: `CORS_ORIGIN = ["www.example.com", "www.example2.com"]`
 
 #### 3) Add your secrets gmail data
 
-This API used googleapis to send email to your gmail account. If you want to receive information about products that are close to their expiration date, you must have a gmail account, because there is no other option to send emails in this API.
+This API uses googleapis to send email to your gmail account. If you want to receive information about products that are close to their expiration date, you must have a gmail account, because there is no other option to send emails in this API.
 
 First thing to do, you need to rename `secrets-sample.js` to `secrets.js` in the config folder.
 
