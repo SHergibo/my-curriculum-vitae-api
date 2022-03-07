@@ -12,15 +12,15 @@ const UploadImg = require("./../middlewares/uploadImg.middleware");
 exports.add = async (req, res, next) => {
   try {
     await UploadImg(req, res);
-    let dataUserId = req.body;
-    dataUserId.userId = req.user._id;
-    dataUserId.img = {
+    let projectData = req.body;
+    projectData.userId = req.user._id;
+    projectData.img = {
       filename: req.file.filename,
       id: req.file.id,
     };
-    dataUserId.technoUsedFront = JSON.parse(req.body.technoUsedFront);
-    dataUserId.technoUsedBack = JSON.parse(req.body.technoUsedBack);
-    const project = new Project(dataUserId);
+    projectData.technoUsedFront = JSON.parse(req.body.technoUsedFront);
+    projectData.technoUsedBack = JSON.parse(req.body.technoUsedBack);
+    const project = new Project(projectData);
     await project.save();
     return res.json(project.transformProject());
   } catch (error) {
