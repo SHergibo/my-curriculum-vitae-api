@@ -2,6 +2,26 @@ const Mongoose = require("mongoose");
 
 let Schema = Mongoose.Schema;
 
+let uploadedImages = new Schema(
+  {
+    fileName: {
+      type: String,
+      trim: true,
+    },
+    alt: {
+      type: String,
+      trim: true,
+    },
+    id: {
+      type: String,
+      trim: true,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 let schema = new Schema(
   {
     projectName: {
@@ -14,15 +34,9 @@ let schema = new Schema(
       required: true,
       trim: true,
     },
-    img: {
-      type: Object,
+    images: {
+      type: [uploadedImages],
       required: true,
-      trim: true,
-    },
-    altImg: {
-      type: String,
-      required: true,
-      trim: true,
     },
     technoUsedFront: {
       type: Array,
