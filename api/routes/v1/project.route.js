@@ -7,9 +7,17 @@ const {
   LOGGED_USER,
 } = require("../../middlewares/auth.middleware");
 
+const uploadImgsMiddleware = require("../../middlewares/uploadImages.middleware");
+
 const router = Express.Router();
 
-router.route("/").post(authorize([ADMIN, LOGGED_USER]), ProjectController.add);
+router
+  .route("/")
+  .post(
+    authorize([ADMIN, LOGGED_USER]),
+    uploadImgsMiddleware,
+    ProjectController.add
+  );
 
 router
   .route("/:projectId")
