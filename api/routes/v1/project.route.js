@@ -21,7 +21,11 @@ router
 
 router
   .route("/:projectId")
-  .patch(authorize([ADMIN, LOGGED_USER]), ProjectController.update)
+  .patch(
+    authorize([ADMIN, LOGGED_USER]),
+    uploadImgsMiddleware,
+    ProjectController.update
+  )
   .delete(authorize([ADMIN, LOGGED_USER]), ProjectController.remove);
 
 router.route("/projects-list").get(ProjectController.findAll);
