@@ -4,8 +4,6 @@ const Project = require("./../models/project.model"),
 const mongoose = require("mongoose");
 const { mongo } = require("./../../config/environment.config");
 
-const UploadImg = require("./../middlewares/uploadImg.middleware");
-
 /**
  * Post project
  */
@@ -45,8 +43,7 @@ exports.findAll = async (req, res, next) => {
       "_id",
       "projectName",
       "description",
-      "img",
-      "altImg",
+      "images",
       "technoUsedFront",
       "technoUsedBack",
       "urlWeb",
@@ -90,8 +87,7 @@ exports.findPaginate = async (req, res, next) => {
       "_id",
       "projectName",
       "description",
-      "img",
-      "altImg",
+      "images",
       "technoUsedFront",
       "technoUsedBack",
       "urlWeb",
@@ -137,12 +133,49 @@ exports.findImg = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    await UploadImg(req, res);
     let body = req.body;
+    let altDescImages = JSON.parse(req.body.altDescImages);
     body.technoUsedFront = JSON.parse(req.body.technoUsedFront);
     body.technoUsedBack = JSON.parse(req.body.technoUsedBack);
-    const projectImg = await Project.findById(req.params.projectId);
-    if (req.file) {
+    const oldProject = await Project.findById(req.params.projectId);
+    let imagesToDelete = oldProject.images;
+
+    if (body.images) {
+      let updatedImagesArray = [];
+      if (body.images.constructor.toString().indexOf("String") > -1) {
+        body.images = [body.images];
+      }
+      body.images.forEach((imageName) => {
+        updatedImagesArray = [
+          ...updatedImagesArray,
+          oldProject.images.filter(
+            (images) => images.fileName === imageName
+          )[0],
+        ];
+
+        imagesToDelete = imagesToDelete.filter(
+          (images) => images.fileName !== imageName
+        );
+      });
+      body.images = updatedImagesArray;
+    } else {
+      body.images = [];
+    }
+
+    if (req.files) {
+      req.files.forEach((image) => {
+        body.images = [
+          ...body.images,
+          {
+            fileName: image.filename,
+            alt: altDescImages[body.images.length],
+            id: image.id,
+          },
+        ];
+      });
+    }
+
+    if (imagesToDelete.length >= 1) {
       const conn = mongoose.createConnection(mongo.uri, {});
 
       let gridFSBucket;
@@ -150,15 +183,12 @@ exports.update = async (req, res, next) => {
         gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
           bucketName: "images",
         });
-        gridFSBucket.delete(projectImg.img.id, (err) => {});
+        imagesToDelete.forEach((image) => {
+          gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+        });
       });
-      body.img = {
-        filename: req.file.filename,
-        id: req.file.id,
-      };
-    } else {
-      body.img = projectImg.img;
     }
+
     const project = await Project.findByIdAndUpdate(
       req.params.projectId,
       body,
@@ -183,7 +213,9 @@ exports.remove = async (req, res, next) => {
       gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
         bucketName: "images",
       });
-      gridFSBucket.delete(projectImg.img.id, (err) => {});
+      projectImg.images.forEach((image) => {
+        gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+      });
     });
     const project = await Project.findByIdAndDelete(req.params.projectId);
     return res.json(project);
