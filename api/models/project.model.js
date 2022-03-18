@@ -7,14 +7,17 @@ let uploadedImages = new Schema(
     fileName: {
       type: String,
       trim: true,
+      required: true,
     },
     alt: {
       type: String,
       trim: true,
+      required: true,
     },
     id: {
       type: String,
       trim: true,
+      required: true,
     },
   },
   {
@@ -40,11 +43,9 @@ let schema = new Schema(
     },
     technoUsedFront: {
       type: Array,
-      required: true,
     },
     technoUsedBack: {
       type: Array,
-      required: true,
     },
     urlWeb: {
       type: String,
