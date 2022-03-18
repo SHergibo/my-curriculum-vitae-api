@@ -13,6 +13,13 @@ exports.add = async (req, res, next) => {
     let altDescImages = JSON.parse(req.body.altDescImages);
     projectData.userId = req.user._id;
     projectData.images = [];
+
+    if (req.files.length > altDescImages) {
+      return next(
+        Boom.badRequest("Il faut au moins une description par image !")
+      );
+    }
+
     req.files.forEach((image, index) => {
       projectData.images = [
         ...projectData.images,
@@ -23,6 +30,30 @@ exports.add = async (req, res, next) => {
         },
       ];
     });
+
+    if (projectData.images.length < 1) {
+      return next(Boom.badRequest("Il faut au moins une image par projet !"));
+    }
+
+    if (
+      !projectData.projectName ||
+      !projectData.description ||
+      !projectData.urlGithub
+    ) {
+      if (projectData.images.length >= 1) {
+        const conn = mongoose.createConnection(mongo.uri, {});
+
+        let gridFSBucket;
+        conn.once("open", () => {
+          gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+            bucketName: "images",
+          });
+          projectData.images.forEach((image) => {
+            gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+          });
+        });
+      }
+    }
     projectData.technoUsedFront = JSON.parse(req.body.technoUsedFront);
     projectData.technoUsedBack = JSON.parse(req.body.technoUsedBack);
     const project = new Project(projectData);
@@ -140,6 +171,16 @@ exports.update = async (req, res, next) => {
     const oldProject = await Project.findById(req.params.projectId);
     let imagesToDelete = oldProject.images;
 
+    if (body.images.length < 1 && req.files.length < 1) {
+      return next(Boom.badRequest("Il faut au moins une image par projet !"));
+    }
+
+    if (req.files.length + body.images.length > altDescImages) {
+      return next(
+        Boom.badRequest("Il faut au moins une description par image !")
+      );
+    }
+
     if (body.images) {
       let updatedImagesArray = [];
       if (body.images.constructor.toString().indexOf("String") > -1) {
@@ -175,18 +216,36 @@ exports.update = async (req, res, next) => {
       });
     }
 
-    if (imagesToDelete.length >= 1) {
-      const conn = mongoose.createConnection(mongo.uri, {});
+    if (!body.projectName || !body.description || !body.urlGithub) {
+      if (req.files.length >= 1) {
+        const conn = mongoose.createConnection(mongo.uri, {});
 
-      let gridFSBucket;
-      conn.once("open", () => {
-        gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-          bucketName: "images",
+        let gridFSBucket;
+        conn.once("open", () => {
+          gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+            bucketName: "images",
+          });
+          req.files.forEach((image) => {
+            gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+          });
         });
-        imagesToDelete.forEach((image) => {
-          gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+      }
+    }
+
+    if (body.projectName && body.description && body.urlGithub) {
+      if (imagesToDelete.length >= 1) {
+        const conn = mongoose.createConnection(mongo.uri, {});
+
+        let gridFSBucket;
+        conn.once("open", () => {
+          gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+            bucketName: "images",
+          });
+          imagesToDelete.forEach((image) => {
+            gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+          });
         });
-      });
+      }
     }
 
     const project = await Project.findByIdAndUpdate(
