@@ -26,22 +26,31 @@ let fontAwesomeIconSchema = new Schema(
   }
 );
 
-let profTitleSchema = new Schema({
-  nameProfessionTitle: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  fontAwesomeIcon: {
-    type: fontAwesomeIconSchema,
-  },
-  svgIconProfTitle: {
-    type: String,
-    set: function (val) {
-      return DomPurify.sanitize(val);
+let profTitleSchema = new Schema(
+  {
+    nameProfessionTitle: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    fontAwesomeIcon: {
+      type: fontAwesomeIconSchema,
+    },
+    svgIconProfTitle: {
+      type: String,
+      set: function (val) {
+        return DomPurify.sanitize(val);
+      },
+    },
+    id: {
+      type: Schema.Types.ObjectId,
+      required: true,
     },
   },
-});
+  {
+    _id: false,
+  }
+);
 
 let schema = new Schema({
   firstname: {
