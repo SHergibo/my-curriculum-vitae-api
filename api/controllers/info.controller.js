@@ -1,5 +1,6 @@
 const Info = require("./../models/info.model"),
-  Boom = require("@hapi/boom");
+  Boom = require("@hapi/boom"),
+  mongoose = require("mongoose");
 
 /**
  * Post info
@@ -22,18 +23,43 @@ exports.add = async (req, res, next) => {
 exports.addProfTitle = async (req, res, next) => {
   try {
     const info = await Info.findById(req.params.infoId);
-
-    /*
-    Delete empty data before update
-    Find why required field doesn't send an error
-    */
-
     let profTitleArray = info.professionTitles;
+    req.body.id = mongoose.Types.ObjectId();
     if (profTitleArray.length >= 1) {
       profTitleArray = [...profTitleArray, req.body];
     } else {
       profTitleArray = [req.body];
     }
+
+    const updatedInfo = await Info.findByIdAndUpdate(
+      req.params.infoId,
+      { professionTitles: profTitleArray },
+      {
+        new: true,
+      }
+    );
+    return res.json(updatedInfo.professionTitles);
+  } catch (error) {
+    next(Boom.badImplementation(error.message));
+  }
+};
+
+/**
+ * Patch profession title
+ */
+exports.editProfTitle = async (req, res, next) => {
+  try {
+    const info = await Info.findById(req.params.infoId);
+    let profTitleArray = info.professionTitles;
+    let indexToEdit = profTitleArray.findIndex(
+      (profTitle) => profTitle.id.toString() === req.params.profTitleId
+    );
+    profTitleArray[indexToEdit] = {
+      nameProfessionTitle: req.body.nameProfessionTitle,
+      fontAwesomeIcon: req.body.fontAwesomeIcon,
+      svgIconProfTitle: req.body.svgIconProfTitle,
+      id: profTitleArray[indexToEdit].id,
+    };
 
     const updatedInfo = await Info.findByIdAndUpdate(
       req.params.infoId,
