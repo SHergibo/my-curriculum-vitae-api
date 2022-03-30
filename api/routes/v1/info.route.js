@@ -19,6 +19,10 @@ router
   .patch(authorize([ADMIN, LOGGED_USER]), InfoController.addProfTitle);
 
 router
+  .route("/prof-title-edit/:infoId/:profTitleId")
+  .patch(authorize([ADMIN, LOGGED_USER]), InfoController.editProfTitle);
+
+router
   .route("/prof-title-delete/:infoId/:profTitleId")
   .delete(authorize([ADMIN, LOGGED_USER]), InfoController.deleteProfTitle);
 
