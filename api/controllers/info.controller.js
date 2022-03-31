@@ -82,7 +82,7 @@ exports.deleteProfTitle = async (req, res, next) => {
     const info = await Info.findById(req.params.infoId);
     let profTitleArray = info.professionTitles;
     profTitleArray = [...profTitleArray].filter(
-      (item) => item._id.toString() !== req.params.profTitleId
+      (item) => item.id.toString() !== req.params.profTitleId
     );
     const updatedInfo = await Info.findByIdAndUpdate(
       req.params.infoId,
