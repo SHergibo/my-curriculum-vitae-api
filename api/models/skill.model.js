@@ -10,14 +10,17 @@ let fontAwesomeIconSchema = new Schema(
     label: {
       type: String,
       trim: true,
+      required: true,
     },
     value: {
       type: String,
       trim: true,
+      required: true,
     },
     prefix: {
       type: String,
       trim: true,
+      required: true,
     },
   },
   {
