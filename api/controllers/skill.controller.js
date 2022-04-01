@@ -64,10 +64,20 @@ exports.findOne = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    const skill = await Skill.findByIdAndUpdate(req.params.skillId, req.body, {
-      new: true,
-    });
-    return res.json(skill.transformSkill());
+    const skill = await Skill.findById(req.params.skillId);
+    skill.fontAwesomeIcon = req.body.fontAwesomeIcon;
+    await skill.save();
+
+    delete req.body.fontAwesomeIcon;
+
+    const updatedSkill = await Skill.findByIdAndUpdate(
+      req.params.skillId,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    return res.json(updatedSkill.transformSkill());
   } catch (error) {
     next(Boom.badImplementation(error.message));
   }
