@@ -23,21 +23,10 @@ exports.add = async (req, res, next) => {
 exports.addProfTitle = async (req, res, next) => {
   try {
     const info = await Info.findById(req.params.infoId);
-    let profTitleArray = info.professionTitles;
     req.body.id = mongoose.Types.ObjectId();
-    if (profTitleArray.length >= 1) {
-      profTitleArray = [...profTitleArray, req.body];
-    } else {
-      profTitleArray = [req.body];
-    }
+    info.professionTitles.push(req.body);
 
-    const updatedInfo = await Info.findByIdAndUpdate(
-      req.params.infoId,
-      { professionTitles: profTitleArray },
-      {
-        new: true,
-      }
-    );
+    const updatedInfo = await info.save();
     return res.json(updatedInfo.professionTitles);
   } catch (error) {
     next(Boom.badImplementation(error.message));
