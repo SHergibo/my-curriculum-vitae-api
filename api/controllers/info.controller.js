@@ -50,13 +50,7 @@ exports.editProfTitle = async (req, res, next) => {
       id: profTitleArray[indexToEdit].id,
     };
 
-    const updatedInfo = await Info.findByIdAndUpdate(
-      req.params.infoId,
-      { professionTitles: profTitleArray },
-      {
-        new: true,
-      }
-    );
+    const updatedInfo = await info.save();
     return res.json(updatedInfo.professionTitles);
   } catch (error) {
     next(Boom.badImplementation(error.message));
