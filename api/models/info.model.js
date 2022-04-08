@@ -52,6 +52,29 @@ let profTitleSchema = new Schema(
   }
 );
 
+let profilePicSchema = new Schema(
+  {
+    fileName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    alt: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    id: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
 let schema = new Schema({
   firstname: {
     type: String,
@@ -113,6 +136,9 @@ let schema = new Schema({
   professionTitles: {
     type: [profTitleSchema],
   },
+  profilePic: {
+    type: profilePicSchema,
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -132,6 +158,7 @@ schema.methods.transformInfo = function () {
     "licence",
     "description",
     "professionTitles",
+    "profilePic",
     "userId",
   ];
   const object = {};
