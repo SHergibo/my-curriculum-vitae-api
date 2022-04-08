@@ -1,5 +1,6 @@
 const Express = require("express"),
-  InfoController = require(`${process.cwd()}/api/controllers/info.controller`);
+  InfoController = require(`${process.cwd()}/api/controllers/info.controller`),
+  uploadImgMiddleware = require("../../middlewares/uploadImg.middleware");
 
 const {
   authorize,
@@ -25,6 +26,20 @@ router
 router
   .route("/prof-title-delete/:infoId/:profTitleId")
   .delete(authorize([ADMIN, LOGGED_USER]), InfoController.deleteProfTitle);
+
+router
+  .route("/prof-picture/:infoId")
+  .patch(
+    authorize([ADMIN, LOGGED_USER]),
+    uploadImgMiddleware,
+    InfoController.addProfPic
+  );
+
+router
+  .route("/prof-picture-delete/:infoId/:profPicId")
+  .delete(authorize([ADMIN, LOGGED_USER]), InfoController.deleteProfPic);
+
+router.route("/image/:imgName").get(InfoController.findImg);
 
 router
   .route("/:infoId")
