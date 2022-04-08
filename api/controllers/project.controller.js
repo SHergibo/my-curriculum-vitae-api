@@ -15,6 +15,17 @@ exports.add = async (req, res, next) => {
     projectData.images = [];
 
     if (req.files.length > altDescImages) {
+      const conn = mongoose.createConnection(mongo.uri, {});
+
+      let gridFSBucket;
+      conn.once("open", () => {
+        gridFSBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+          bucketName: "images",
+        });
+        req.files.forEach((image) => {
+          gridFSBucket.delete(new mongoose.Types.ObjectId(image.id));
+        });
+      });
       return next(
         Boom.badRequest("Il faut au moins une description par image !")
       );
