@@ -163,7 +163,13 @@ exports.findImg = async (req, res, next) => {
         bucketName: "images",
       });
       res.header("Content-Type", "image/webp");
-      gridFSBucket.openDownloadStreamByName(req.params.imgName).pipe(res);
+      gridFSBucket
+        .openDownloadStreamByName(req.params.imgName)
+        .on("error", (error) => {
+          res.json(Boom.notFound(`Cette image n'existe pas !`));
+          return;
+        })
+        .pipe(res);
     });
   } catch (error) {
     next(Boom.badImplementation(error.message));
