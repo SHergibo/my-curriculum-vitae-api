@@ -1,11 +1,20 @@
-const NodeMailer = require('./../../api/helpers/nodemailer.helper');
+const User = require("./../models/user.model"),
+  { SendGridAPIKey, SendGridFrom } = require("../../config/environment.config"),
+  sgMail = require("@sendgrid/mail");
+
+sgMail.setApiKey(SendGridAPIKey);
 
 /**
-* Send mail
-*/
+ * Send mail
+ */
 exports.send = async (req, res, next) => {
   try {
-    const output = `
+    const user = await User.find({});
+    const msg = {
+      to: user[0].email,
+      from: SendGridFrom,
+      subject: "Vous avez reçu un message sur votre site CV !",
+      html: `
       <p>You have a new contact request</p>
       <h3>Contact details</h3>
       <ul>
@@ -16,10 +25,10 @@ exports.send = async (req, res, next) => {
       </ul>
       <h3>Message</h3>
       <p>${req.body.message}</p>
-      `;
-
-      NodeMailer.send(output, "Vous avez reçu un message sur votre site CV !", res);
-
+      `,
+    };
+    await sgMail.send(msg);
+    return res.status(204).send();
   } catch (error) {
     next(error);
   }
