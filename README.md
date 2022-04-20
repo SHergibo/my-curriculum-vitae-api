@@ -14,7 +14,7 @@ My-curriculum-vitae API is a simple REST API developed using Node.js, Express an
 - Logging with [morgan](https://github.com/expressjs/morgan)
 - Authentication and Authorization with [passport](http://passportjs.org)
 - Uses [multer](https://www.npmjs.com/package/multer) and [multer-gridfs-storage](https://www.npmjs.com/package/multer-gridfs-storage) to upload files to MongoDb
-- Send email with [Nodemailer](https://nodemailer.com/about/) via gmail with [googleapis](https://www.npmjs.com/package/googleapis)
+- Send email with [SendGrid](https://sendgrid.com/)
 
 ## Requirements
 
