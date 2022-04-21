@@ -53,6 +53,11 @@ let schema = new Schema({
     enum: roles,
     required: true,
   },
+  emailAuth: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
 });
 
 schema.pre("save", async function (next) {
