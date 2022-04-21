@@ -1,7 +1,6 @@
 const User = require("./../models/user.model"),
   Boom = require("@hapi/boom"),
-  Bcrypt = require("bcrypt"),
-  { env } = require("../../config/environment.config");
+  EmailAuthToken = require("../models/emailAuthToken.model");
 
 /**
  * Post one user
@@ -10,6 +9,7 @@ exports.add = async (req, res, next) => {
   try {
     const user = new User(req.body);
     await user.save();
+    await EmailAuthToken.generate(user);
     return res.json(user.transform());
   } catch (error) {
     next(User.checkDuplicateEmail(error));
