@@ -5,11 +5,13 @@ const Express = require("express"),
   EducExpeRoutes = require("./educationExperience.route"),
   SkillRoutes = require("./skill.route"),
   ProjectRoutes = require("./project.route"),
-  AuthRoutes = require("./auth.route");
+  AuthRoutes = require("./auth.route"),
+  EmailAuthTokenRoutes = require("./emailAuthToken.route");
 
 const router = Express.Router();
 
 router.use("/auth", AuthRoutes);
+router.use("/email-auth", EmailAuthTokenRoutes);
 router.use("/users", UserRoutes);
 router.use("/mails", MailRoutes);
 router.use("/infos", InfoRoutes);
