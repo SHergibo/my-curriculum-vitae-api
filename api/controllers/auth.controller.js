@@ -36,13 +36,22 @@ const _generateTokenResponse = function (user, accessToken) {
  */
 exports.login = async (req, res, next) => {
   try {
-    const checkRole = await User.findOne({ email: req.body.email });
-    if (checkRole.role !== "ghost") {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return next(Boom.notFound("Cette adresse mail n'existe pas !"));
+    }
+
+    if (user.role !== "ghost") {
       const { user, accessToken } = await User.findAndGenerateToken(req.body);
       const token = _generateTokenResponse(user, accessToken);
       return res.json({ token, user: user.transform() });
     } else {
-      return next(Boom.forbidden("Please, verify your account first"));
+      const error = Boom.unauthorized(
+        "Pour vous connecter, vous devez vérifier votre compte !"
+      );
+      error.output.payload.errorType = "emailAuth";
+      return next(error);
     }
   } catch (error) {
     return next(error);
