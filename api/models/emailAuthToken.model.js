@@ -43,13 +43,13 @@ schema.statics.generate = async function (user) {
   await tokenObject.save();
 
   const msg = {
-    to: user[0].email,
+    to: user.email,
     from: SendGridFrom,
     subject: "Authentification de votre compte !",
     html: `
       <h2>Authentification de votre compte</h2>
       <p>Cliquez sur le lien ci-dessous pour authentifier votre compte.<p>
-      <a href="${UrlEmail}/email-auth/${newToken.token}">Auhthentifier votre compte</a>
+      <a href="${UrlEmail}/email-auth/${tokenObject.token}">Auhthentifier votre compte</a>
       `,
   };
   await sgMail.send(msg);
