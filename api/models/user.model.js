@@ -51,11 +51,7 @@ let schema = new Schema({
   role: {
     type: String,
     enum: roles,
-    required: true,
-  },
-  emailAuth: {
-    type: Boolean,
-    default: false,
+    default: "ghost",
     required: true,
   },
 });
@@ -148,24 +144,23 @@ schema.statics.get = async function (id) {
 schema.statics.findAndGenerateToken = async function (options) {
   const { email, password, refreshObject } = options;
 
-  if (!email) throw Boom.badRequest("An email is required to generate a token");
+  if (!email)
+    throw Boom.badRequest("Une adresse email est requise pour se connecter !");
   if (!refreshObject) {
     if (!password)
-      throw Boom.badRequest(
-        "A password is required to authorize a token generation"
-      );
+      throw Boom.badRequest("Un mot de passe est requis pour se connecter !");
   }
 
   const user = await this.findOne({ email });
   if (!user) {
-    throw Boom.notFound("User not found");
+    throw Boom.notFound("Cette adresse mail n'existe pas !");
   }
 
   if (!refreshObject) {
     if ((await user.passwordMatches(password)) === false) {
-      throw Boom.unauthorized(
-        "Password must match to authorize a token generation"
-      );
+      const error = Boom.unauthorized("Mauvais mot de passe !");
+      error.output.payload.errorType = "wrongPassword";
+      throw error;
     }
   }
 
