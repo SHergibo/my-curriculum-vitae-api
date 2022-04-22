@@ -34,7 +34,7 @@ exports.updateAuthEmailToken = async (req, res, next) => {
         token: req.params.tokenId,
       });
       await User.findByIdAndUpdate(token.userId, {
-        emailAuth: true,
+        role: "admin",
       });
       return res.status(204).send();
     }
