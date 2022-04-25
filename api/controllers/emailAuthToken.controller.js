@@ -4,11 +4,13 @@ const EmailAuthToken = require("../models/emailAuthToken.model"),
   Moment = require("moment-timezone");
 
 /**
- * POST email auth token
+ * POST create new email auth token
  */
 exports.createNewEmailAuthToken = async (req, res, next) => {
   try {
-    let expiredToken = await EmailAuthToken.findOne({ token: req.body.email });
+    let expiredToken = await EmailAuthToken.findOne({
+      userEmail: req.body.email,
+    });
     let user = await User.findById(expiredToken.userId);
     await EmailAuthToken.findByIdAndDelete(expiredToken.id);
     await EmailAuthToken.generate(user);
@@ -28,7 +30,7 @@ exports.updateAuthEmailToken = async (req, res, next) => {
       token: req.params.tokenId,
     });
     if (findTokenAuth.expires < Moment().toDate()) {
-      return Boom.unauthorized("Verification token expired !");
+      return next(Boom.unauthorized("Verification token expired !"));
     } else {
       let token = await EmailAuthToken.findOneAndDelete({
         token: req.params.tokenId,
