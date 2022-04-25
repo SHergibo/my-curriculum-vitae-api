@@ -36,7 +36,7 @@ let schema = new Schema({
 
 schema.statics.generate = async function (user) {
   const tokenObject = new emailAuthToken();
-  tokenObject.token = `${user._id}.${Crypto.randomBytes(40).toString("hex")}`;
+  tokenObject.token = `${Crypto.randomBytes(40).toString("hex")}`;
   tokenObject.userId = user._id;
   tokenObject.userEmail = user.email;
   tokenObject.expires = Moment().add(5, "minutes").toDate();
@@ -49,7 +49,7 @@ schema.statics.generate = async function (user) {
     html: `
       <h2>Authentification de votre compte</h2>
       <p>Cliquez sur le lien ci-dessous pour authentifier votre compte.<p>
-      <a href="${UrlEmail}/email-auth/${tokenObject.token}">Auhthentifier votre compte</a>
+      <a href="${UrlEmail}/email-auth/${tokenObject.token}">Authentifier votre compte</a>
       `,
   };
   await sgMail.send(msg);
