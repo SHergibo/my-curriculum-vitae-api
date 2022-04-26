@@ -11,6 +11,10 @@ exports.createNewEmailAuthToken = async (req, res, next) => {
     let expiredToken = await EmailAuthToken.findOne({
       userEmail: req.body.email,
     });
+
+    if (!expiredToken) {
+      return next(Boom.notFound("Cette adresse mail n'existe pas !"));
+    }
     let user = await User.findById(expiredToken.userId);
     await EmailAuthToken.findByIdAndDelete(expiredToken.id);
     await EmailAuthToken.generate(user);
