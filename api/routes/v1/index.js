@@ -7,11 +7,13 @@ const Express = require("express"),
   ProjectRoutes = require("./project.route"),
   AuthRoutes = require("./auth.route"),
   EmailAuthTokenRoutes = require("./emailAuthToken.route");
+EmailResetPasswordAuthToken = require("./emailResetPasswordAuthToken.route");
 
 const router = Express.Router();
 
 router.use("/auth", AuthRoutes);
 router.use("/email-auth", EmailAuthTokenRoutes);
+router.use("/email-request-reset-password", EmailResetPasswordAuthToken);
 router.use("/users", UserRoutes);
 router.use("/mails", MailRoutes);
 router.use("/infos", InfoRoutes);
