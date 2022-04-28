@@ -33,8 +33,11 @@ exports.updateAuthEmailToken = async (req, res, next) => {
     let findTokenAuth = await EmailAuthToken.findOne({
       token: req.params.tokenId,
     });
+    if (!findTokenAuth) {
+      return next(Boom.notFound("Ce token de vérification n'existe pas !"));
+    }
     if (findTokenAuth.expires < Moment().toDate()) {
-      return next(Boom.unauthorized("Verification token expired !"));
+      return next(Boom.unauthorized("Ce token de vérification a expiré !"));
     } else {
       let token = await EmailAuthToken.findOneAndDelete({
         token: req.params.tokenId,
