@@ -63,7 +63,11 @@ exports.resetUserPassword = async (req, res, next) => {
       let token = await EmailResetPasswordAuthToken.findOneAndDelete({
         token: req.params.tokenId,
       });
-      await User.findByIdAndUpdate(token.userId, req.body);
+
+      let user = await User.findById(token.userId);
+      user.password = req.body.password;
+      await user.save();
+
       return res.status(204).send();
     }
   } catch (error) {
