@@ -49,6 +49,7 @@ schema.statics.generate = async function (user) {
     html: `
       <h2>Authentification de votre compte</h2>
       <p>Cliquez sur le lien ci-dessous pour authentifier votre compte.<p>
+      <p>Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !</p>
       <a href="${UrlEmail}/email-auth/${tokenObject.token}">Authentifier votre compte</a>
       `,
   };
