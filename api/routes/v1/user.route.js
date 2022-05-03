@@ -9,8 +9,7 @@ const {
 
 const router = Express.Router();
 
-router.route("/");
-//.post(UserController.add);
+router.route("/").post(UserController.add).get(UserController.checkUserExist);
 
 router
   .route("/:userId")
