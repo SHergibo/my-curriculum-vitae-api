@@ -45,13 +45,15 @@ schema.statics.generate = async function (user) {
   const msg = {
     to: user.email,
     from: SendGridFrom,
-    subject: "Authentification de votre compte !",
-    html: `
-      <h2>Authentification de votre compte</h2>
-      <p>Cliquez sur le lien ci-dessous pour authentifier votre compte.<p>
-      <p>Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !</p>
-      <a href="${UrlEmail}/email-auth/${tokenObject.token}">Authentifier votre compte</a>
-      `,
+    templateId: "d-c916190fbc6d437397741713238d8688",
+    dynamic_template_data: {
+      subject: "Authentification de votre compte !",
+      title: "Authentification de votre compte ! - votre CV en ligne",
+      text: `<p>Cliquez sur le lien ci-dessous pour authentifier votre compte.<p>
+             <p>Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !</p>`,
+      url: `${UrlEmail}/email-auth/${tokenObject.token}`,
+      urlText: "Authentifier votre compte !",
+    },
   };
   await sgMail.send(msg);
 };
