@@ -4,6 +4,7 @@ const Mongoose = require("mongoose"),
   {
     SendGridAPIKey,
     SendGridFrom,
+    SendGridTemplateId,
     UrlEmail,
   } = require("../../config/environment.config"),
   sgMail = require("@sendgrid/mail");
@@ -45,12 +46,11 @@ schema.statics.generate = async function (user) {
   const msg = {
     to: user.email,
     from: SendGridFrom,
-    templateId: "d-c916190fbc6d437397741713238d8688",
+    templateId: SendGridTemplateId,
     dynamic_template_data: {
       subject: "Authentification de votre compte !",
-      title: "Authentification de votre compte ! - votre CV en ligne",
-      text: `<p>Cliquez sur le lien ci-dessous pour authentifier votre compte.<p>
-             <p>Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !</p>`,
+      title: "Authentification de votre compte !",
+      text: `Cliquez sur le lien ci-dessous pour authentifier votre compte. Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !`,
       url: `${UrlEmail}/email-auth/${tokenObject.token}`,
       urlText: "Authentifier votre compte !",
     },
