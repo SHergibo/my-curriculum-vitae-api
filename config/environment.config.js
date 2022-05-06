@@ -30,6 +30,7 @@ module.exports = {
   CorsOrigin: process.env.CORS_ORIGIN,
   SendGridAPIKey: process.env.SENDGRID_API_KEY,
   SendGridFrom: process.env.SENDGRID_FROM,
+  SendGridTemplateId: process.env.SENDGRID_TEMPLATE_ID,
   UrlEmail:
     process.env.NODE_ENV === "production"
       ? process.env.CORS_ORIGIN[0]
