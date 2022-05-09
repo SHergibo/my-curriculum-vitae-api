@@ -25,7 +25,7 @@ exports.add = async (req, res, next) => {
     const user = new User(req.body);
     await user.save();
     await EmailAuthToken.generate(user);
-    return res.json(user.transform());
+    return res.status(204).send();
   } catch (error) {
     next(User.checkDuplicateEmail(error));
   }
