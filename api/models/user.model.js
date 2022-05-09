@@ -21,16 +21,6 @@ let schema = new Schema({
     unique: true,
     trim: true,
   },
-  firstname: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  lastname: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   email: {
     type: String,
     required: "You must specify an email",
@@ -113,7 +103,7 @@ schema.methods.passwordMatches = async function (pwd) {
 };
 
 schema.methods.transform = function () {
-  const fields = ["_id", "username", "firstname", "lastname", "email", "role"];
+  const fields = ["_id", "username", "email", "role"];
   const object = {};
   fields.forEach((field) => {
     object[field] = this[field];
