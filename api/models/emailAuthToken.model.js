@@ -1,15 +1,8 @@
 const Mongoose = require("mongoose"),
   Crypto = require("crypto"),
   Moment = require("moment-timezone"),
-  {
-    SendGridAPIKey,
-    SendGridFrom,
-    SendGridTemplateId,
-    UrlEmail,
-  } = require("../../config/environment.config"),
-  sgMail = require("@sendgrid/mail");
-
-sgMail.setApiKey(SendGridAPIKey);
+  { UrlEmail } = require("../../config/environment.config"),
+  { sengGridEmail } = require("./../helpers/sendGrid-mail.helper");
 
 let Schema = Mongoose.Schema;
 
@@ -43,19 +36,15 @@ schema.statics.generate = async function (user) {
   tokenObject.expires = Moment().add(5, "minutes").toDate();
   await tokenObject.save();
 
-  const msg = {
-    to: user.email,
-    from: SendGridFrom,
-    templateId: SendGridTemplateId,
-    dynamic_template_data: {
-      subject: "Authentification de votre compte !",
-      title: "Authentification de votre compte !",
-      text: `Cliquez sur le lien ci-dessous pour authentifier votre compte. Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !`,
-      url: `${UrlEmail}/email-auth/${tokenObject.token}`,
-      urlText: "Authentifier votre compte !",
-    },
+  const dynamic_template_data = {
+    subject: "Authentification de votre compte !",
+    title: "Authentification de votre compte !",
+    text: `Cliquez sur le lien ci-dessous pour authentifier votre compte. Si vous n'avez pas créé de compte sur <a href="${UrlEmail}">${UrlEmail}</a>, ne partagez pas et ne cliquez pas sur le lien ci-dessous !`,
+    url: `${UrlEmail}/email-auth/${tokenObject.token}`,
+    urlText: "Authentifier votre compte !",
   };
-  await sgMail.send(msg);
+
+  await sengGridEmail({ to: user.email, dynamic_template_data });
 };
 
 const emailAuthToken = Mongoose.model("EmailAuthToken", schema);
