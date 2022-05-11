@@ -1,15 +1,8 @@
 const Mongoose = require("mongoose"),
   Crypto = require("crypto"),
   Moment = require("moment-timezone"),
-  {
-    SendGridAPIKey,
-    SendGridFrom,
-    SendGridTemplateId,
-    UrlEmail,
-  } = require("../../config/environment.config"),
-  sgMail = require("@sendgrid/mail");
-
-sgMail.setApiKey(SendGridAPIKey);
+  { UrlEmail } = require("../../config/environment.config"),
+  { sengGridEmail } = require("./../helpers/sendGrid-mail.helper");
 
 let Schema = Mongoose.Schema;
 
@@ -43,19 +36,15 @@ schema.statics.generate = async function (user) {
   tokenObject.expires = Moment().add(10, "minutes").toDate();
   await tokenObject.save();
 
-  const msg = {
-    to: user.email,
-    from: SendGridFrom,
-    templateId: SendGridTemplateId,
-    dynamic_template_data: {
-      subject: "Requête changement de mot de passe !",
-      title: "Requête changement de mot de passe !",
-      text: `Cliquez sur le lien ci-dessous pour pouvoir changer votre mot de passe. Si vous n'avez pas fait cette demande de changement de mot de passe, ne partagez pas et ne cliquez pas sur lien ci-dessous !`,
-      url: `${UrlEmail}/reset-password/${tokenObject.token}`,
-      urlText: "Changer votre mot de passe !",
-    },
+  const dynamic_template_data = {
+    subject: "Requête changement de mot de passe !",
+    title: "Requête changement de mot de passe !",
+    text: `Cliquez sur le lien ci-dessous pour pouvoir changer votre mot de passe. Si vous n'avez pas fait cette demande de changement de mot de passe, ne partagez pas et ne cliquez pas sur lien ci-dessous !`,
+    url: `${UrlEmail}/reset-password/${tokenObject.token}`,
+    urlText: "Changer votre mot de passe !",
   };
-  await sgMail.send(msg);
+
+  await sengGridEmail({ to: user.email, dynamic_template_data });
 };
 
 const emailResetPasswordAuthToken = Mongoose.model(
