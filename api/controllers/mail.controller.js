@@ -1,8 +1,5 @@
 const User = require("./../models/user.model"),
-  { SendGridAPIKey, SendGridFrom } = require("../../config/environment.config"),
-  sgMail = require("@sendgrid/mail");
-
-sgMail.setApiKey(SendGridAPIKey);
+  { sengGridEmail } = require("./../helpers/sendGrid-mail.helper");
 
 /**
  * Send mail
@@ -10,24 +7,22 @@ sgMail.setApiKey(SendGridAPIKey);
 exports.send = async (req, res, next) => {
   try {
     const user = await User.find({});
-    const msg = {
-      to: user[0].email,
-      from: SendGridFrom,
+
+    const dynamic_template_data = {
       subject: "Vous avez reçu un message sur votre site CV !",
-      html: `
-      <p>You have a new contact request</p>
-      <h3>Contact details</h3>
-      <ul>
-          <li>Name : ${req.body.lastname} ${req.body.firstname}</li>
-          <li>Phone number : ${req.body.phone}</li>
-          <li>Email : ${req.body.email}</li>
-          <li>Subject : ${req.body.subject}</li>
-      </ul>
+      title: "Vous avez reçu un message sur votre site CV !",
+      text: `
+      <h3>Détails du message</h3>
+      <p>Nom : ${req.body.lastname} ${req.body.firstname}</p>
+      <p>N° de téléphone : ${req.body.phone}</p>
+      <p>Email : ${req.body.email}</p>
+      <p>Sujet : ${req.body.subject}</p>
       <h3>Message</h3>
-      <p>${req.body.message}</p>
-      `,
+      ${req.body.message}`,
     };
-    await sgMail.send(msg);
+
+    await sengGridEmail({ to: user[0].email, dynamic_template_data });
+
     return res.status(204).send();
   } catch (error) {
     next(error);
