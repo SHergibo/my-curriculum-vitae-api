@@ -139,14 +139,6 @@ let schema = new Schema({
   profilePic: {
     type: profilePicSchema,
   },
-  hasPortfolio: {
-    type: Boolean,
-    default: false,
-  },
-  hasSkills: {
-    type: Boolean,
-    default: false,
-  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -168,7 +160,7 @@ schema.methods.transformInfo = function () {
     "professionTitles",
     "profilePic",
     "hasPortfolio",
-    "hasSkills",
+    "hasResume",
     "userId",
   ];
   const object = {};
