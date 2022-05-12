@@ -1,4 +1,7 @@
 const Info = require("./../models/info.model"),
+  Project = require("./../models/project.model"),
+  EducExpe = require("./../models/educationExperience.model"),
+  Skill = require("./../models/skill.model"),
   Boom = require("@hapi/boom"),
   mongoose = require("mongoose");
 
@@ -13,6 +16,16 @@ exports.add = async (req, res, next) => {
     dataUserId.userId = req.user._id;
     const info = new Info(dataUserId);
     await info.save();
+
+    let totalProject = await Project.countDocuments();
+
+    if (totalProject >= 1) info.hasPortfolio = true;
+
+    let totalSkill = await Skill.countDocuments();
+    let totalEducExpe = await EducExpe.countDocuments();
+
+    if (totalSkill >= 1 || totalEducExpe >= 1) info.hasResume = true;
+
     return res.json(info.transformInfo());
   } catch (error) {
     next(Boom.badImplementation(error.message));
@@ -190,6 +203,16 @@ exports.deleteProfPic = async (req, res, next) => {
 exports.find = async (req, res, next) => {
   try {
     const info = await Info.findOne();
+
+    let totalProject = await Project.countDocuments();
+
+    if (totalProject >= 1) info.hasPortfolio = true;
+
+    let totalSkill = await Skill.countDocuments();
+    let totalEducExpe = await EducExpe.countDocuments();
+
+    if (totalSkill >= 1 || totalEducExpe >= 1) info.hasResume = true;
+
     if (info) {
       return res.json(info.transformInfo());
     } else {
