@@ -53,6 +53,13 @@ For example:
 `SENDGRID_FROM = "your sender email or domain here"`
 `SENDGRID_API_KEY = "your SendGrid API key here"`
 
+After that, you need to create a template for your email. To create a template, go to Email API menu in your SendGrid account and click on Dynamic Templates. Here, click on create a Dynamic Template, add a name and click on Create. Next, click on your new template and click on Add version, select Blank Template and then Code Editor. Delete everything in the editor and go to [here](https://github.com/SHergibo/my-curriculum-vitae-api/blob/master/api/views/layouts/email-sendgrid-template.hbs), copy and paste everything from this file to the template editor in SendGrid, save and return to the previous page.
+
+Now click on your template, copy the Template ID and paste it in yout development.env and production.env.
+
+for example:
+`SENDGRID_TEMPLATE_ID = "your template id here"`
+
 #### 4) Install dependencies
 
 ```bash
