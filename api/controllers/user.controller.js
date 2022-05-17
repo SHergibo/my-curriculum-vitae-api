@@ -1,4 +1,5 @@
 const User = require("./../models/user.model"),
+  EmailChangeEmailAuthToken = require("../models/emailChangeEmailAuthToken.model"),
   Boom = require("@hapi/boom"),
   EmailAuthToken = require("../models/emailAuthToken.model");
 
@@ -59,18 +60,48 @@ exports.checkUserExist = async (req, res, next) => {
 };
 
 /**
- * PATCH user
+ * PATCH user password
  */
-exports.update = async (req, res, next) => {
+exports.updatePassword = async (req, res, next) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.userId, req.body, {
-      override: true,
-      upsert: true,
+    let passwordDataObject = {
+      actualPassword: req.body.actualPassword,
+      newPassword: req.body.newPassword,
+      confirmPassword: req.body.confirmPassword,
+    };
+    await User.findByIdAndUpdate(req.params.userId, passwordDataObject, {
       new: true,
     });
-    return res.json(user.transform());
+    return res.status(204).send();
   } catch (error) {
-    next(User.checkDuplicateEmail(err));
+    next(Boom.badImplementation(error.message));
+  }
+};
+
+/**
+ * PATCH user email
+ */
+exports.updateEmail = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if (user.email === req.body.email.toLowerCase()) {
+      return next(Boom.conflict("Cette email existe déjà !"));
+    }
+
+    const changeEmailToken = await EmailChangeEmailAuthToken.findOne({
+      userId: req.params.userId,
+    });
+
+    if (changeEmailToken) {
+      await EmailChangeEmailAuthToken.findByIdAndDelete(changeEmailToken._id);
+    }
+
+    await EmailChangeEmailAuthToken.generate(req.params.userId, req.body.email);
+
+    return res.status(204).send();
+  } catch (error) {
+    next(Boom.badImplementation(error.message));
   }
 };
 
