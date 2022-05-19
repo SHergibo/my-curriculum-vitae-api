@@ -1,22 +1,18 @@
 const Express = require("express"),
   SkillController = require(`${process.cwd()}/api/controllers/skill.controller`);
 
-const {
-  authorize,
-  ADMIN,
-  LOGGED_USER,
-} = require("../../middlewares/auth.middleware");
+const { authorize, ADMIN } = require("../../middlewares/auth.middleware");
 
 const router = Express.Router();
 
-router.route("/").post(authorize([ADMIN, LOGGED_USER]), SkillController.add);
+router.route("/").post(authorize([ADMIN]), SkillController.add);
 
 router.route("/skills-list").get(SkillController.findAll);
 
 router
   .route("/:skillId")
-  .get(authorize([ADMIN, LOGGED_USER]), SkillController.findOne)
-  .patch(authorize([ADMIN, LOGGED_USER]), SkillController.update)
-  .delete(authorize([ADMIN, LOGGED_USER]), SkillController.remove);
+  .get(authorize([ADMIN]), SkillController.findOne)
+  .patch(authorize([ADMIN]), SkillController.update)
+  .delete(authorize([ADMIN]), SkillController.remove);
 
 module.exports = router;

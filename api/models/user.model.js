@@ -10,7 +10,7 @@ const {
   jwtExpirationInterval,
 } = require("../../config/environment.config");
 
-const roles = ["admin", "user", "ghost"];
+const roles = ["admin", "ghost"];
 const [MINLENGTH_PASSWORD, MAXLENGTH_PASSWORD] = [6, 128];
 
 let Schema = Mongoose.Schema;

@@ -1,11 +1,7 @@
 const Express = require("express"),
   ProjectController = require(`${process.cwd()}/api/controllers/project.controller`);
 
-const {
-  authorize,
-  ADMIN,
-  LOGGED_USER,
-} = require("../../middlewares/auth.middleware");
+const { authorize, ADMIN } = require("../../middlewares/auth.middleware");
 
 const uploadImgsMiddleware = require("../../middlewares/uploadImages.middleware");
 
@@ -13,20 +9,12 @@ const router = Express.Router();
 
 router
   .route("/")
-  .post(
-    authorize([ADMIN, LOGGED_USER]),
-    uploadImgsMiddleware,
-    ProjectController.add
-  );
+  .post(authorize([ADMIN]), uploadImgsMiddleware, ProjectController.add);
 
 router
   .route("/:projectId")
-  .patch(
-    authorize([ADMIN, LOGGED_USER]),
-    uploadImgsMiddleware,
-    ProjectController.update
-  )
-  .delete(authorize([ADMIN, LOGGED_USER]), ProjectController.remove);
+  .patch(authorize([ADMIN]), uploadImgsMiddleware, ProjectController.update)
+  .delete(authorize([ADMIN]), ProjectController.remove);
 
 router.route("/projects-list").get(ProjectController.findAll);
 
