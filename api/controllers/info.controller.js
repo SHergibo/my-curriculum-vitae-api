@@ -3,7 +3,8 @@ const Info = require("./../models/info.model"),
   EducExpe = require("./../models/educationExperience.model"),
   Skill = require("./../models/skill.model"),
   Boom = require("@hapi/boom"),
-  mongoose = require("mongoose");
+  mongoose = require("mongoose"),
+  { format } = require("date-fns");
 
 const { mongo } = require("./../../config/environment.config");
 
@@ -12,9 +13,11 @@ const { mongo } = require("./../../config/environment.config");
  */
 exports.add = async (req, res, next) => {
   try {
-    let dataUserId = req.body;
-    dataUserId.userId = req.user._id;
-    const info = new Info(dataUserId);
+    let dataUser = req.body;
+    dataUser.userId = req.user._id;
+    dataUser.isoBirthdate = req.body.birthdate;
+    dataUser.birthdate = format(new Date(dataUser.isoBirthdate), "dd/MM/yyyy");
+    const info = new Info(dataUser);
     await info.save();
 
     let totalProject = await Project.countDocuments();
@@ -204,16 +207,15 @@ exports.find = async (req, res, next) => {
   try {
     const info = await Info.findOne();
 
-    let totalProject = await Project.countDocuments();
-
-    if (totalProject >= 1) info.hasPortfolio = true;
-
-    let totalSkill = await Skill.countDocuments();
-    let totalEducExpe = await EducExpe.countDocuments();
-
-    if (totalSkill >= 1 || totalEducExpe >= 1) info.hasResume = true;
-
     if (info) {
+      let totalProject = await Project.countDocuments();
+
+      if (totalProject >= 1) info.hasPortfolio = true;
+
+      let totalSkill = await Skill.countDocuments();
+      let totalEducExpe = await EducExpe.countDocuments();
+
+      if (totalSkill >= 1 || totalEducExpe >= 1) info.hasResume = true;
       return res.json(info.transformInfo());
     } else {
       return res.json(info);
@@ -228,7 +230,10 @@ exports.find = async (req, res, next) => {
  */
 exports.update = async (req, res, next) => {
   try {
-    const info = await Info.findByIdAndUpdate(req.params.infoId, req.body, {
+    let dataUser = req.body;
+    dataUser.isoBirthdate = req.body.birthdate;
+    dataUser.birthdate = format(new Date(dataUser.isoBirthdate), "dd/MM/yyyy");
+    const info = await Info.findByIdAndUpdate(req.params.infoId, dataUser, {
       new: true,
     });
     return res.json(info.transformInfo());
