@@ -119,6 +119,11 @@ let schema = new Schema({
     },
   },
   birthdate: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  isoBirthdate: {
     type: Date,
     required: true,
     trim: true,
@@ -155,6 +160,7 @@ schema.methods.transformInfo = function () {
     "email",
     "address",
     "birthdate",
+    "isoBirthdate",
     "licence",
     "description",
     "professionTitles",
